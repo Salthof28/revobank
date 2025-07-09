@@ -1,4 +1,4 @@
-import { RepositoryException } from "./exception.repository";
+import { RepositoryException } from "../../global/exception/exception.repository";
 
 export class AccountNotFoundRepositoryException extends RepositoryException {
     constructor(message: string = 'user not found') {
