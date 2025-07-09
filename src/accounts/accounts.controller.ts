@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, InternalServerErrorException, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { UpdateAccountDto } from './dto/req/update-account.dto';
 import { CreateAccountDto } from './dto/req/create-account.dto';
+import { RepositoryException } from 'src/global/exception/exception.repository';
 
 @Controller('accounts')
 export class AccountsController {
@@ -9,26 +10,81 @@ export class AccountsController {
 
     @Get()
     getAllAccounts(@Query('accountName') accountName: string) {
-        return this.accountsService.getAllAccounts({accountName})
+        try {
+            const allAccounts = this.accountsService.getAllAccounts({accountName});
+            return allAccounts;
+        } catch (error) {
+            if(error instanceof RepositoryException) throw error;           
+            throw new InternalServerErrorException({
+                message: 'something wrong on our side',
+                error: 'internal server error',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            })
+        }
+        
     }
 
     @Post()
     createAccount(@Body() body: CreateAccountDto) {
-        return this.accountsService.createAccount({body})
+        try {
+            const createdAccount = this.accountsService.createAccount({body});
+            return createdAccount
+        } catch (error) {
+            if(error instanceof RepositoryException) throw error;           
+            throw new InternalServerErrorException({
+                message: 'something wrong on our side',
+                error: 'internal server error',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            })           
+        }
+        
     }
 
     @Get('/:accountNumber')
     getAccount(@Param('accountNumber', ParseIntPipe) accountNumber: number) {
-        return this.accountsService.getAccount({ accountNumber });
+        try{
+            const account =  this.accountsService.getAccount({ accountNumber });
+            return account;
+        } catch (error) {
+            if(error instanceof RepositoryException) throw error;
+            throw new InternalServerErrorException({
+                message: 'something wrong on our side',
+                error: 'internal server error',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            })
+        }
+        
     }
 
     @Patch('/:accountNumber')
     updateAccount(@Param('accountNumber', ParseIntPipe) accountNumber: number, @Body() body: UpdateAccountDto) {
-        return this.accountsService.updateAccount({accountNumber, body})
+        try {
+            const updateAccount =  this.accountsService.updateAccount({accountNumber, body});
+            return updateAccount;
+        } catch (error) {
+            if(error instanceof RepositoryException) throw error;
+            throw new InternalServerErrorException({
+                message: 'something wrong on our side',
+                error: 'internal server error',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            })
+        }
+        
     }
 
     @Delete('/:accountNumber')
     deleteAccount(@Param('accountNumber', ParseIntPipe) accountNumber: number) {
-        return this.accountsService.deleteAccount({accountNumber});
+        try {
+            const deleteAccount =  this.accountsService.deleteAccount({accountNumber}); 
+            return deleteAccount
+        } catch (error) {
+            if(error instanceof RepositoryException) throw error;
+            throw new InternalServerErrorException({
+                message: 'something wrong on our side',
+                error: 'internal server error',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            })
+        }
+        
     }
 }
