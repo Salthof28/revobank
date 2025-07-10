@@ -5,9 +5,10 @@ import { AccountsModule } from './accounts/accounts.module';
 import { UserModule } from './user/user.module';
 import { LoggerMiddleware } from './global/middlewares/logger.middleware';
 import { RateLimitMiddleware } from './global/middlewares/rate-limit.middleware';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [AccountsModule, UserModule],
+  imports: [AccountsModule, UserModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
