@@ -1,17 +1,23 @@
 import { User } from "../entities/user.entity";
 
 
-export const users: User[] = [
+export const mockUsers: User[] = [
     {
-        id: "u1",
+        id: 1,
         email: "jane@mail.com",
         name: "Jane",
-        password: "jane123"
+        phone: '082312344329',
+        number_ktp: '38193456',
+        password: "jane123",
+        role: 'admin'
     },
     {
-        id: "u2",
+        id: 2,
         email: "john@mail.com",
         name: "John Doe",
-        password: "john123"
+        phone: '082314356329',
+        number_ktp: '32133246',
+        password: "john123",
+        role: 'customer'
     }
 ]

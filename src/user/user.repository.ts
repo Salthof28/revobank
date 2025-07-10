@@ -1,31 +1,34 @@
-import { users } from "./data/mock-user";
+import { mockUsers } from "./data/mock-user";
 import { User } from "./entities/user.entity";
+import { Create, GetAll, GetOne, Updated, UserRepositoryItf } from "./user.repository.interface";
+import { UserNotFoundException } from "./exceptions/user-not-found.exception";
 
 
-export class UserRepository {
-    async findById(id: string): Promise<User | null> {
-        return users.find((user) => user.id === id) || null;
+export class UserRepository implements UserRepositoryItf {
+    getAll(query: GetAll) {
+        const allUsers: User[] = query.name ? mockUsers.filter(user => user.name.toLowerCase().includes(query.name.toLowerCase())) : mockUsers;
+        return allUsers;
     }
 
-    async findByEmail(email: string): Promise<User | null> {
-        return users.find((user) => user.email === email) || null;
+    getOne(param: GetOne): User {
+        const account: User | undefined = mockUsers.find(user => user.id === param.id);
+        if(!account) throw new UserNotFoundException();
+        return account;
     }
 
-    async getFirst(): Promise<User | null> {
-        return users.length > 0 ? users[0] : null;
+    updated(paramBody: Updated): User {
+        const indexUser = mockUsers.findIndex(user => user.id === paramBody.id);
+        if(indexUser === -1) throw new UserNotFoundException();
+        let updatedUser = mockUsers[indexUser];
+        updatedUser = {...updatedUser, ...paramBody.body};
+        mockUsers[indexUser] = updatedUser;
+        return updatedUser;
     }
 
-    async create(user: User): Promise<User> {
-        users.push(user);
-        return user;
+    created(bodyData: Create): User {
+        const newUser = bodyData.body;
+        mockUsers.push(newUser);
+        return newUser;
     }
 
-    async update(id: string, updatedUser: User): Promise<User | null> {
-        const index = users.findIndex((user) => user.id === id);
-        if(index !== -1) {
-            users[index] = updatedUser;
-            return updatedUser;
-        }
-        return null;
-    }
 }
