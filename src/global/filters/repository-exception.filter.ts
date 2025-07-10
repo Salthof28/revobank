@@ -2,6 +2,7 @@ import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, HttpException } from
 import { HttpAdapterHost } from "@nestjs/core";
 import { AccountNotFoundRepositoryException } from "src/accounts/exceptions/account-not-found.exception";
 import { RepositoryException } from "src/global/exception/exception.repository";
+import { UserNotFoundException } from "src/user/exceptions/user-not-found.exception";
 
 
 
@@ -23,6 +24,13 @@ export class ExceptionFilterRepository implements ExceptionFilter {
 
         if (exception instanceof AccountNotFoundRepositoryException) {
             // data custom exception / error response
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.NOT_FOUND,
+            }
+        }
+        else if (exception instanceof UserNotFoundException) {
             responseBody = {
                 message: exception.message,
                 error: exception.name,
