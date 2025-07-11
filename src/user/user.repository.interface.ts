@@ -7,7 +7,7 @@ export interface UserRepositoryItf {
     getAll(query: GetAll): User[];
     getOne(param: GetOne): User;
     updated(paramBody: Updated): User;
-    created(bodyData: Create): User;
+    created(bodyData: Create): Promise<User>;
 }
 
 export interface GetAll {

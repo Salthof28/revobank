@@ -2,8 +2,12 @@ import { mockUsers } from "./data/mock-user";
 import { User } from "./entities/user.entity";
 import { Create, GetAll, GetOne, Updated, UserRepositoryItf } from "./user.repository.interface";
 import { UserNotFoundException } from "./exceptions/user-not-found.exception";
+import { HttpStatus, InternalServerErrorException } from "@nestjs/common";
+import { scrypt as _scrypt, randomBytes } from "crypto"; // change name function callback to _scrypt
+import { promisify } from "util";
 
-
+// because function callback, we use promisify to be able use in async await function. scrypt change password to string
+const scrypt = promisify(_scrypt);
 export class UserRepository implements UserRepositoryItf {
     getAll(query: GetAll) {
         const allUsers: User[] = query.name ? mockUsers.filter(user => user.name.toLowerCase().includes(query.name.toLowerCase())) : mockUsers;
@@ -11,9 +15,9 @@ export class UserRepository implements UserRepositoryItf {
     }
 
     getOne(param: GetOne): User {
-        const account: User | undefined = mockUsers.find(user => user.id === param.id);
-        if(!account) throw new UserNotFoundException();
-        return account;
+        const user: User | undefined = mockUsers.find(user => user.id === param.id);
+        if(!user) throw new UserNotFoundException();
+        return user;
     }
 
     updated(paramBody: Updated): User {
@@ -25,10 +29,25 @@ export class UserRepository implements UserRepositoryItf {
         return updatedUser;
     }
 
-    created(bodyData: Create): User {
+    async created(bodyData: Create): Promise<User> {
+        const findEmail: boolean = mockUsers.some(user => user.email === bodyData.body.email);
+        console.log(findEmail);
+        if(findEmail) throw new InternalServerErrorException({
+            message: 'email already registered',
+            error: 'false',
+            statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        });
+        
+        const salt = randomBytes(8).toString('hex');
+        // use buffer because we use typescript and hash return buffer
+        const hash = (await scrypt(bodyData.body.password, salt, 64)) as Buffer;
+        // seperate salt and hash with dot (default format);
+        bodyData.body.password = salt + '.' + hash.toString('hex');
         const newUser = bodyData.body;
         mockUsers.push(newUser);
         return newUser;
     }
+
+
 
 }
