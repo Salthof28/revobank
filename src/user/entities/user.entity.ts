@@ -5,5 +5,5 @@ export class User {
     phone:string;
     number_ktp:string;
     password:string;
-    role: string
+    role_user: string
 }

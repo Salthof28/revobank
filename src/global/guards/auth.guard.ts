@@ -36,7 +36,7 @@ export class AuthGuard implements CanActivate {
             return true
         }
         const { user } = context.switchToHttp().getRequest();
-        if(!user || !requiredRoles.includes(user.role)) throw new ForbiddenException('Access Denied');
+        if(!user || !requiredRoles.includes(user.role_user)) throw new ForbiddenException('Access Denied');
         return true;
     }
 

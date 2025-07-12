@@ -15,5 +15,5 @@ export class CreateUserDto {
     @IsString()
     password: string;
     @IsString()
-    role: string
+    role_user: string
 }

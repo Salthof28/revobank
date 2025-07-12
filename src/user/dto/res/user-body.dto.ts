@@ -23,5 +23,5 @@ export class UserBodyDto {
 
     @Expose()
     @Type(() => String)
-    role: string
+    role_user: string
 }
