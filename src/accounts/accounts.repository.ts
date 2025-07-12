@@ -10,19 +10,19 @@ import { AccountNotFoundRepositoryException } from "./exceptions/account-not-fou
 export class AccountsRepository implements AccountsRepositoryItf {
 
     getAll(query: GetAll): Account[] {
-        let allAccounts: Account[] = query.accountName ? mockAccounts.filter(acc => acc.accountName.toLowerCase().includes(query.accountName.toLowerCase())) : mockAccounts;
+        let allAccounts: Account[] = query.account_name ? mockAccounts.filter(acc => acc.account_name.toLowerCase().includes(query.account_name.toLowerCase())) : mockAccounts;
         return allAccounts;
     }
     
     getOne(param: AccountNumRepository): Account {
-        let account: Account | undefined = mockAccounts.find((acc) =>acc.accountNumber === param.accountNumber);
+        let account: Account | undefined = mockAccounts.find((acc) =>acc.account_number === param.account_number);
         if(!account) throw new AccountNotFoundRepositoryException();
         return account;
     }
 
     updated(paramBody: Updated): Account {
-        const findAccountId: number = this.getOne(paramBody).accountNumber;
-        const indexAccount: number = mockAccounts.findIndex(acc => acc.accountNumber === findAccountId);
+        const findAccountId: number = this.getOne(paramBody).account_number;
+        const indexAccount: number = mockAccounts.findIndex(acc => acc.account_number === findAccountId);
         let account = mockAccounts[indexAccount]
         account ={ ...account, ...paramBody.body }
         mockAccounts[indexAccount] = account;
@@ -36,7 +36,7 @@ export class AccountsRepository implements AccountsRepositoryItf {
     }
 
     deleted(paramNumber: AccountNumRepository): Account {
-        const findIndexAccount = mockAccounts.findIndex(acc => acc.accountNumber === paramNumber.accountNumber);
+        const findIndexAccount = mockAccounts.findIndex(acc => acc.account_number === paramNumber.account_number);
         // console.log(findIndexAccount);
         if(findIndexAccount === -1) throw new AccountNotFoundRepositoryException();
         const deleteAccount = mockAccounts[findIndexAccount];

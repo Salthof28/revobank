@@ -2,13 +2,15 @@ import { IsNumber, IsString } from "class-validator";
 
 export class CreateAccountDto {
     @IsNumber()
-    accountNumber: number;
+    id: number;
     @IsNumber()
-    userId: number;
+    account_number: number;
+    @IsNumber()
+    user_id: number;
     @IsString()
-    accountType: string;
+    account_type: string;
     @IsString()
-    accountName: string;
+    account_name: string;
     @IsNumber()
     balance: number;
     @IsString()
@@ -16,9 +18,9 @@ export class CreateAccountDto {
     @IsString()
     status: string;
     @IsString()
-    branchCode: string;
+    branch_code: string;
     @IsString()
-    createdAt: string;
+    created_at: string;
     @IsString()
-    updatedAt: string
+    updated_at: string
 }

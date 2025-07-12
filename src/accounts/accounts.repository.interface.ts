@@ -11,15 +11,15 @@ export interface AccountsRepositoryItf {
 }
 
 export interface GetAll {
-    accountName: string;
+    account_name: string;
 }
 
 export interface AccountNumRepository {
-    accountNumber: number;
+    account_number: number;
 }
 
 export interface Updated {
-    accountNumber: number;
+    account_number: number;
     body: Partial<Account>
 }
 export interface Created {

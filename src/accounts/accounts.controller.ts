@@ -9,9 +9,9 @@ export class AccountsController {
     constructor(private accountsService: AccountsService) {}
 
     @Get()
-    getAllAccounts(@Query('accountName') accountName: string) {
+    getAllAccounts(@Query('accountName') account_name: string) {
         try {
-            const allAccounts = this.accountsService.getAllAccounts({accountName});
+            const allAccounts = this.accountsService.getAllAccounts({account_name});
             return allAccounts;
         } catch (error) {
             if(error instanceof RepositoryException) throw error;           
@@ -41,9 +41,9 @@ export class AccountsController {
     }
 
     @Get('/:accountNumber')
-    getAccount(@Param('accountNumber', ParseIntPipe) accountNumber: number) {
+    getAccount(@Param('accountNumber', ParseIntPipe) account_number: number) {
         try{
-            const account =  this.accountsService.getAccount({ accountNumber });
+            const account =  this.accountsService.getAccount({ account_number });
             return account;
         } catch (error) {
             if(error instanceof RepositoryException) throw error;
@@ -57,9 +57,9 @@ export class AccountsController {
     }
 
     @Patch('/:accountNumber')
-    updateAccount(@Param('accountNumber', ParseIntPipe) accountNumber: number, @Body() body: UpdateAccountDto) {
+    updateAccount(@Param('accountNumber', ParseIntPipe) account_number: number, @Body() body: UpdateAccountDto) {
         try {
-            const updateAccount =  this.accountsService.updateAccount({accountNumber, body});
+            const updateAccount =  this.accountsService.updateAccount({account_number, body});
             return updateAccount;
         } catch (error) {
             if(error instanceof RepositoryException) throw error;
@@ -73,9 +73,9 @@ export class AccountsController {
     }
 
     @Delete('/:accountNumber')
-    deleteAccount(@Param('accountNumber', ParseIntPipe) accountNumber: number) {
+    deleteAccount(@Param('accountNumber', ParseIntPipe) account_number: number) {
         try {
-            const deleteAccount =  this.accountsService.deleteAccount({accountNumber}); 
+            const deleteAccount =  this.accountsService.deleteAccount({account_number}); 
             return deleteAccount
         } catch (error) {
             if(error instanceof RepositoryException) throw error;

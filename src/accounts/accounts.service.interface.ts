@@ -12,15 +12,15 @@ export interface AccountsServiceItf {
 }
 
 export interface GetAllAccounts {
-    accountName: string;
+    account_name: string;
 }
 
 export interface AccountNumService {
-    accountNumber: number;
+    account_number: number;
 }
 
 export interface UpdateAccount {
-    accountNumber: number;
+    account_number: number;
     body: Partial<Account>
 }
 export interface CreateAccount {

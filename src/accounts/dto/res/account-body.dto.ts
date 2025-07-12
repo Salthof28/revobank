@@ -7,13 +7,13 @@ export class AccountBodyResDto {
     // accountNumber: number;
     @Expose()
     @Type(() => Number)
-    userId: number;
+    user_id: number;
     @Expose()
     @Type(() => String)
-    accountType: string;
+    account_type: string;
     @Expose()
     @Type(() => String)
-    accountName: string; // user name
+    account_name: string; // user name
     @Expose()
     @Type(() => Number)
     balance: number;
@@ -25,13 +25,13 @@ export class AccountBodyResDto {
     status: string;
     @Expose()
     @Type(() => String)
-    branchCode: string; // identification bank location when account created
+    branch_code: string; // identification bank location when account created
     @Expose()
     @Type(() => String)
-    createdAt: string;
+    created_at: string;
     @Expose()
     @Type(() => String)
-    updatedAt: string
+    updated_at: string
 }
 
 
