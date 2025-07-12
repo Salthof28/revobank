@@ -1,6 +1,7 @@
 import { User } from "./entities/user.entity";
 import { UpdateUserDto } from "./dto/req/update-user.dto";
 import { CreateUserDto } from "./dto/req/create-user.dto";
+import { LoginUserDto } from "src/auth/dto/login-user.dto";
 
 
 export interface UserRepositoryItf {
@@ -8,6 +9,7 @@ export interface UserRepositoryItf {
     getOne(param: GetOne): User;
     updated(paramBody: Updated): User;
     created(bodyData: Create): Promise<User>;
+    getProfile(request: number): User;
 }
 
 export interface GetAll {

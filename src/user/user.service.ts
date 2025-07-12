@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { GetAllUsers, GetUser, UpdateUser, UserServiceItf } from './user.service.interface';
 import { User } from './entities/user.entity';
+import { LoginUserDto } from 'src/auth/dto/login-user.dto';
 
 
 @Injectable()
@@ -20,5 +21,7 @@ export class UserService implements UserServiceItf {
         return this.userRepository.updated(paramBody);
     }
 
-
+    getProfileUser(request: number): User {
+        return this.userRepository.getProfile(request);
+    }
 }

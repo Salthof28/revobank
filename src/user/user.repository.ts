@@ -5,6 +5,7 @@ import { UserNotFoundException } from "./exceptions/user-not-found.exception";
 import { HttpStatus, InternalServerErrorException } from "@nestjs/common";
 import { scrypt as _scrypt, randomBytes } from "crypto"; // change name function callback to _scrypt
 import { promisify } from "util";
+import { LoginUserDto } from "src/auth/dto/login-user.dto";
 
 // because function callback, we use promisify to be able use in async await function. scrypt change password to string
 const scrypt = promisify(_scrypt);
@@ -48,6 +49,9 @@ export class UserRepository implements UserRepositoryItf {
         return newUser;
     }
 
-
-
+    getProfile(request: number): User {
+        const user: User | undefined = mockUsers.find(user => user.id === request);
+        if(!user) throw new UserNotFoundException();
+        return user;
+    }
 }
