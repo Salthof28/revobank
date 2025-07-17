@@ -1,30 +1,47 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { UserRepository } from 'src/user/user.repository';
-import { AuthServiceItf, Login, Register } from './auth.service.interface';
+import { AuthServiceItf } from './auth.service.interface';
 import { User } from 'src/user/entities/user.entity';
-import { mockUsers } from 'src/user/data/mock-user';
+// import { mockUsers } from 'src/user/data/mock-user';
 import { JwtService } from '@nestjs/jwt';
 import { scrypt as _scrypt, randomBytes } from "crypto"; // change name function callback to _scrypt
 import { promisify } from "util";
 import { UserNotFoundException } from 'src/user/exceptions/user-not-found.exception';
+import { CreateUserDto } from 'src/user/dto/req/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 const scrypt = promisify(_scrypt);
 @Injectable()
-export class AuthService implements AuthServiceItf {
+// implements AuthServiceItf
+export class AuthService  {
   constructor(private userRepository: UserRepository, private jwtService: JwtService) {}
 
-  register(bodyData: Register): Promise<User> {
-    return this.userRepository.created(bodyData);
+  async register(body: CreateUserDto): Promise<User> {
+    // chceking email, phone, and ktp registered
+    const findUserEmail: User | undefined = await this.userRepository.findEmail(body.email);
+    if(findUserEmail) throw new ConflictException('Email Registered');
+    const findUserPhone: User | undefined = await this.userRepository.findPhone(body.phone);
+    if(findUserPhone) throw new ConflictException('Number Phone Registered');
+    const findUserKtp: User | undefined = await this.userRepository.findKtp(body.number_ktp);
+    if(findUserKtp) throw new ConflictException('Number KTP Registered');
+    
+    // hash password process
+    const salt = randomBytes(8).toString('hex');
+    // use buffer because we use typescript and hash return buffer
+    const hash = (await scrypt(body.password, salt, 64)) as Buffer;
+    // seperate salt and hash with dot (default format);
+    body.password = salt + '.' + hash.toString('hex');
+    return this.userRepository.created(body);
   }
 
-  async login(bodyData: Login): Promise<{ access_token: string }> {
+  async login(body: LoginUserDto): Promise<{ access_token: string }> {
     // get first data found and destructing array become object
-    const user: User | undefined = mockUsers.find(user => user.email === bodyData.body.email);
-    if(!user) throw new UserNotFoundException();
+    const user: User | undefined = await this.userRepository.findEmail(body.email);
+    if(!user) throw new BadRequestException('email or passwrod in valid');
     
     // check password from user does it fit with salt and hash from database
     const [salt, storedHash] = user.password.split('.');
-    const hash = (await scrypt(bodyData.body.password, salt, 64)) as Buffer;
+    const hash = (await scrypt(body.password, salt, 64)) as Buffer;
 
     if(storedHash !== hash.toString('hex')) throw new BadRequestException('email or passwrod in valid');
     // return user;

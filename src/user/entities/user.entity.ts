@@ -1,3 +1,8 @@
+import { RoleUser } from "@prisma/client";
+
+// import { RoleUser } from "generated/prisma";
+
+
 export class User {
     id: number;
     email:string;
@@ -5,5 +10,7 @@ export class User {
     phone:string;
     number_ktp:string;
     password:string;
-    role_user: string
+    role_user: RoleUser;
+    created_at: Date | null;
+    updated_at: Date | null;
 }

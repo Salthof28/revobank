@@ -12,48 +12,49 @@ import { Roles } from 'src/global/decorators/role.decorator';
 export class UserController {
     constructor(private userService: UserService) {}
 
-    @UseGuards(AuthGuard)
-    @Roles(Role.ADMIN)
-    @Get()
-    getAllUsers(@Query('name') name: string): User[] {
-        try{
-            const allUsers = this.userService.getAllUsers({name})
-            return allUsers;
-        } catch (error) {
-            if(error instanceof RepositoryException) throw error;
-            throw new InternalServerErrorException()
-        }
-    }
+    // @UseGuards(AuthGuard)
+    // @Roles(Role.ADMIN)
+    // @Get()
+    // getAllUsers(@Query('name') name: string): User[] {
+    //     try{
+    //         const allUsers = this.userService.getAllUsers({name})
+    //         return allUsers;
+    //     } catch (error) {
+    //         if(error instanceof RepositoryException) throw error;
+    //         throw new InternalServerErrorException()
+    //     }
+    // }
 
     @UseGuards(AuthGuard)
     @Get('profile')
-    getProfileUser(@Request() request): User {
-        return this.userService.getProfileUser(request.user.id)
+    async getProfileUser(@Request() request): Promise<User> {
+        const userProfile = await this.userService.getProfileUser(request.user.id);
+        return userProfile;
     }
     
-    @UseGuards(AuthGuard)
-    @Roles(Role.ADMIN)
-    @Get('/:id')
-    getUser(@Param('id', ParseIntPipe) id: number): User {
-        try {
-            const user = this.userService.getUser({id});
-            return user;
-        } catch (error) {
-            if(error instanceof RepositoryException) throw error;
-            throw new InternalServerErrorException()
-        }
-    }
+    // @UseGuards(AuthGuard)
+    // @Roles(Role.ADMIN)
+    // @Get('/:id')
+    // getUser(@Param('id', ParseIntPipe) id: number): User {
+    //     try {
+    //         const user = this.userService.getUser({id});
+    //         return user;
+    //     } catch (error) {
+    //         if(error instanceof RepositoryException) throw error;
+    //         throw new InternalServerErrorException()
+    //     }
+    // }
 
-    @UseGuards(AuthGuard)
-    @Patch('/:id')
-    updateUser(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateUserDto): User {
-        try{
-            const updateUser = this.userService.updateUser({id, body});
-            return updateUser;
-        } catch (error) {
-            if(error instanceof RepositoryException) throw error;
-            throw new InternalServerErrorException();
-        }
-    }
+    // @UseGuards(AuthGuard)
+    // @Patch('/:id')
+    // updateUser(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateUserDto): User {
+    //     try{
+    //         const updateUser = this.userService.updateUser({id, body});
+    //         return updateUser;
+    //     } catch (error) {
+    //         if(error instanceof RepositoryException) throw error;
+    //         throw new InternalServerErrorException();
+    //     }
+    // }
 
 }

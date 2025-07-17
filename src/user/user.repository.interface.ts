@@ -5,27 +5,21 @@ import { LoginUserDto } from "src/auth/dto/login-user.dto";
 
 
 export interface UserRepositoryItf {
-    getAll(query: GetAll): User[];
-    getOne(param: GetOne): User;
-    updated(paramBody: Updated): User;
-    created(bodyData: Create): Promise<User>;
-    getProfile(request: number): User;
+    // getAll(name: string): User[];
+    getOne(id: number): Promise<User | undefined>;
+    updated(paramBody: Updated): Promise<User>;
+    // updatedProfile(body: UpdateUserDto): Promise<User>;
+    created(body: CreateUserDto): Promise<User>;
+    // getProfile(request: number): Promise<User>;
+    findEmail(email: string): Promise<User | undefined>;
+    findPhone(phone: string): Promise<User | undefined>;
+    findKtp(number_ktp: string): Promise<User | undefined>;
 }
 
-export interface GetAll {
-    name: string
-}
-
-export interface GetOne {
-    id: number
-}
 
 export interface Updated {
-    id: number,
+    id?: number,
     body: UpdateUserDto
 }
 
-export interface Create {
-    body: CreateUserDto
-}
 
