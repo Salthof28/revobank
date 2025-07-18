@@ -6,7 +6,9 @@ import { InvalidLoginException } from "src/auth/exceptions/invalid-login-excepti
 import { KtpRegisteredException } from "src/auth/exceptions/ktp-registered-exception";
 import { PhoneRegisteredException } from "src/auth/exceptions/phone-registered-exception";
 import { RepositoryException } from "src/global/exception/exception.repository";
+import { OldPasswordException } from "src/user/exceptions/old-password-exception";
 import { UserNotFoundException } from "src/user/exceptions/user-not-found.exception";
+import { NotInputException } from "../exception/no-input-exception";
 
 
 
@@ -63,6 +65,20 @@ export class ExceptionFilterRepository implements ExceptionFilter {
             }
         }
         else if (exception instanceof InvalidLoginException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.BAD_REQUEST
+            }
+        }
+        else if (exception instanceof OldPasswordException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.BAD_REQUEST
+            }
+        }
+        else if (exception instanceof NotInputException) {
             responseBody = {
                 message: exception.message,
                 error: exception.name,

@@ -12,6 +12,7 @@ import { EmailRegisteredException } from './exceptions/email-registered-exceptio
 import { PhoneRegisteredException } from './exceptions/phone-registered-exception';
 import { KtpRegisteredException } from './exceptions/ktp-registered-exception';
 import { InvalidLoginException } from './exceptions/invalid-login-exception';
+import { Condition } from 'src/global/entities/condition.entity';
 
 const scrypt = promisify(_scrypt);
 @Injectable()
@@ -21,13 +22,19 @@ export class AuthService implements AuthServiceItf  {
 
   async register(body: CreateUserDto): Promise<User> {
     // chceking email, phone, and ktp registered
-    const findUserEmail: User | undefined = await this.userRepository.findEmail(body.email);
-    if(findUserEmail) throw new EmailRegisteredException();
-    const findUserPhone: User | undefined = await this.userRepository.findPhone(body.phone);
-    if(findUserPhone) throw new PhoneRegisteredException();
-    const findUserKtp: User | undefined = await this.userRepository.findKtp(body.number_ktp);
-    if(findUserKtp) throw new KtpRegisteredException();
-    
+    // use findFirst because can run one query for any condition
+    const condition: Condition[] = [
+      {email: body.email},
+      {phone: body.phone},
+      {number_ktp: body.number_ktp}
+    ];
+    const existing: User | undefined = await this.userRepository.findExistingUser(condition);
+    if(existing) {
+      if (existing.email === body.email?.toLowerCase()) throw new EmailRegisteredException();
+      if (existing.phone === body.phone) throw new PhoneRegisteredException();
+      if (existing.number_ktp === body.number_ktp) throw new KtpRegisteredException();
+    }
+
     // hash password process
     const salt = randomBytes(8).toString('hex');
     // use buffer because we use typescript and hash return buffer
