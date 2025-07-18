@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/user/user.repository';
 import { AuthServiceItf } from './auth.service.interface';
 import { User } from 'src/user/entities/user.entity';
@@ -6,24 +6,27 @@ import { User } from 'src/user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { scrypt as _scrypt, randomBytes } from "crypto"; // change name function callback to _scrypt
 import { promisify } from "util";
-import { UserNotFoundException } from 'src/user/exceptions/user-not-found.exception';
 import { CreateUserDto } from 'src/user/dto/req/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { EmailRegisteredException } from './exceptions/email-registered-exception';
+import { PhoneRegisteredException } from './exceptions/phone-registered-exception';
+import { KtpRegisteredException } from './exceptions/ktp-registered-exception';
+import { InvalidLoginException } from './exceptions/invalid-login-exception';
 
 const scrypt = promisify(_scrypt);
 @Injectable()
-// implements AuthServiceItf
-export class AuthService  {
+
+export class AuthService implements AuthServiceItf  {
   constructor(private userRepository: UserRepository, private jwtService: JwtService) {}
 
   async register(body: CreateUserDto): Promise<User> {
     // chceking email, phone, and ktp registered
     const findUserEmail: User | undefined = await this.userRepository.findEmail(body.email);
-    if(findUserEmail) throw new ConflictException('Email Registered');
+    if(findUserEmail) throw new EmailRegisteredException();
     const findUserPhone: User | undefined = await this.userRepository.findPhone(body.phone);
-    if(findUserPhone) throw new ConflictException('Number Phone Registered');
+    if(findUserPhone) throw new PhoneRegisteredException();
     const findUserKtp: User | undefined = await this.userRepository.findKtp(body.number_ktp);
-    if(findUserKtp) throw new ConflictException('Number KTP Registered');
+    if(findUserKtp) throw new KtpRegisteredException();
     
     // hash password process
     const salt = randomBytes(8).toString('hex');
@@ -37,13 +40,13 @@ export class AuthService  {
   async login(body: LoginUserDto): Promise<{ access_token: string }> {
     // get first data found and destructing array become object
     const user: User | undefined = await this.userRepository.findEmail(body.email);
-    if(!user) throw new BadRequestException('email or passwrod in valid');
+    if(!user) throw new InvalidLoginException();
     
     // check password from user does it fit with salt and hash from database
     const [salt, storedHash] = user.password.split('.');
     const hash = (await scrypt(body.password, salt, 64)) as Buffer;
 
-    if(storedHash !== hash.toString('hex')) throw new BadRequestException('email or passwrod in valid');
+    if(storedHash !== hash.toString('hex')) throw new InvalidLoginException();
     // return user;
     const payload = { id: user.id, email: user.email, name: user.name, phone: user.phone, number_ktp: user.number_ktp, role_user: user.role_user }
 

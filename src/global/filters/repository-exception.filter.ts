@@ -1,6 +1,10 @@
 import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, HttpException } from "@nestjs/common";
 import { HttpAdapterHost } from "@nestjs/core";
 import { AccountNotFoundRepositoryException } from "src/accounts/exceptions/account-not-found.exception";
+import { EmailRegisteredException } from "src/auth/exceptions/email-registered-exception";
+import { InvalidLoginException } from "src/auth/exceptions/invalid-login-exception";
+import { KtpRegisteredException } from "src/auth/exceptions/ktp-registered-exception";
+import { PhoneRegisteredException } from "src/auth/exceptions/phone-registered-exception";
 import { RepositoryException } from "src/global/exception/exception.repository";
 import { UserNotFoundException } from "src/user/exceptions/user-not-found.exception";
 
@@ -35,6 +39,34 @@ export class ExceptionFilterRepository implements ExceptionFilter {
                 message: exception.message,
                 error: exception.name,
                 statusCode: HttpStatus.NOT_FOUND,
+            }
+        }
+        else if (exception instanceof EmailRegisteredException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.CONFLICT,
+            }
+        }
+        else if (exception instanceof KtpRegisteredException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.CONFLICT,
+            }
+        }
+        else if (exception instanceof PhoneRegisteredException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.CONFLICT,
+            }
+        }
+        else if (exception instanceof InvalidLoginException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.BAD_REQUEST
             }
         }
         // res.status(responseBody.statusCode).send(responseBody);
