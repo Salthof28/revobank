@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "accounts" ALTER COLUMN "pin" SET DATA TYPE VARCHAR(80);

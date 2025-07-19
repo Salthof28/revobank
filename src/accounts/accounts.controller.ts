@@ -1,17 +1,26 @@
-import { Body, Controller, Delete, Get, HttpStatus, InternalServerErrorException, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, InternalServerErrorException, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { UpdateAccountDto } from './dto/req/update-account.dto';
 import { CreateAccountDto } from './dto/req/create-account.dto';
 import { RepositoryException } from 'src/global/exception/exception.repository';
+import { AuthGuard } from 'src/global/guards/auth.guard';
+import { Role } from 'src/global/enum/role.enum';
+import { Roles } from 'src/global/decorators/role.decorator';
 
 @Controller('accounts')
 export class AccountsController {
     constructor(private accountsService: AccountsService) {}
 
+    @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
     @Get()
-    getAllAccounts(@Query('accountName') account_name: string) {
+    async getAllAccounts(@Query('account_name') account_name: string, @Query('account_number') account_number: string, @Query('branch_code') branch_code: string) {
         try {
-            const allAccounts = this.accountsService.getAllAccounts({account_name});
+            const allAccounts = await this.accountsService.getAllAccounts({
+                account_name,
+                account_number,
+                branch_code
+            });
             return allAccounts;
         } catch (error) {
             if(error instanceof RepositoryException) throw error;           
@@ -23,27 +32,49 @@ export class AccountsController {
         }
         
     }
-
+    @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
     @Post()
-    createAccount(@Body() body: CreateAccountDto) {
+    async createAccountByAdmin(@Body() body: CreateAccountDto) {
         try {
-            const createdAccount = this.accountsService.createAccount({body});
-            return createdAccount
+            // console.log(body.user_id);
+            const createdAccount = await this.accountsService.createAccount(body);
+            return createdAccount;
         } catch (error) {
-            if(error instanceof RepositoryException) throw error;           
+            if(error instanceof RepositoryException || error instanceof HttpException) throw error;           
             throw new InternalServerErrorException({
                 message: 'something wrong on our side',
                 error: 'internal server error',
                 statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
             })           
-        }
-        
+        }  
+    }
+    @UseGuards(AuthGuard)
+    @Roles(Role.CUSTOMER)
+    @Post('register')
+    async createAccountByUser(@Request() request, @Body() body: CreateAccountDto) {
+        try {
+            body.user_id = request.user.id;
+            body.account_name = request.user.name;
+            // console.log(body.user_id);
+            const createdAccount = await this.accountsService.createAccount(body);
+            return createdAccount;
+        } catch (error) {
+            if(error instanceof RepositoryException || error instanceof HttpException) throw error;           
+            throw new InternalServerErrorException({
+                message: 'something wrong on our side',
+                error: 'internal server error',
+                statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            })           
+        }  
     }
 
-    @Get('/:accountNumber')
-    getAccount(@Param('accountNumber', ParseIntPipe) account_number: number) {
+    @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
+    @Get('/:id')
+    async getAccount(@Param('id', ParseIntPipe) id: number) {
         try{
-            const account =  this.accountsService.getAccount({ account_number });
+            const account = await this.accountsService.getAccount(id);
             return account;
         } catch (error) {
             if(error instanceof RepositoryException) throw error;
@@ -53,13 +84,17 @@ export class AccountsController {
                 statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
             })
         }
-        
     }
 
-    @Patch('/:accountNumber')
-    updateAccount(@Param('accountNumber', ParseIntPipe) account_number: number, @Body() body: UpdateAccountDto) {
+    @UseGuards(AuthGuard)
+    @Patch('/:id')
+    updateAccount(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateAccountDto & { oldPin?: string }) {
         try {
-            const updateAccount =  this.accountsService.updateAccount({account_number, body});
+            const updateAccount =  this.accountsService.updateAccount({
+                id,
+                account: body,
+                oldPin: body.oldPin
+            });
             return updateAccount;
         } catch (error) {
             if(error instanceof RepositoryException) throw error;
@@ -71,11 +106,11 @@ export class AccountsController {
         }
         
     }
-
-    @Delete('/:accountNumber')
-    deleteAccount(@Param('accountNumber', ParseIntPipe) account_number: number) {
+    @UseGuards(AuthGuard)
+    @Delete('/:id')
+    async deleteAccount(@Param('id', ParseIntPipe) id: number) {
         try {
-            const deleteAccount =  this.accountsService.deleteAccount({account_number}); 
+            const deleteAccount = await this.accountsService.deleteAccount(id); 
             return deleteAccount
         } catch (error) {
             if(error instanceof RepositoryException) throw error;
@@ -84,7 +119,6 @@ export class AccountsController {
                 error: 'internal server error',
                 statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
             })
-        }
-        
+        } 
     }
 }
