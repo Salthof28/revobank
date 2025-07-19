@@ -6,9 +6,10 @@ import { UserModule } from './user/user.module';
 import { LoggerMiddleware } from './global/middlewares/logger.middleware';
 import { RateLimitMiddleware } from './global/middlewares/rate-limit.middleware';
 import { AuthModule } from './auth/auth.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
-  imports: [AccountsModule, UserModule, AuthModule],
+  imports: [AccountsModule, UserModule, AuthModule, TransactionsModule],
   controllers: [AppController],
   providers: [AppService],
 })
