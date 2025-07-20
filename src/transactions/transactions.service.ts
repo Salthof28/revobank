@@ -53,19 +53,19 @@ export class TransactionsService implements TransactionsServiceItf {
     const processWithdraw: Transaction = await this.transactionRepository.withdraw(body);
     return processWithdraw;
   }
-  // findAll() {
-  //   return `This action returns all transactions`;
-  // }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} transaction`;
-  // }
+  async transactionDeposit(body: CreateTransactionDto): Promise<Transaction> {
+    // check transaction type and TR
+    if(body.transaction_type !== "DEPOSIT") throw new InvalidTypeTransactionException();
+    if(body.code_transaction_ref !== "DP") throw new InvalidTypeTransactionException('invalid code_transaction_type');
+    // check account
+    const account: Account | undefined = await this.accountRepository.getOne(body.account_id);
+    if (!account) throw new AccountNotFoundRepositoryException('Your account not found');
+    // check account status
+    if(account.status === 'INACTIVE') throw new StatusAccountException();
+    // process deposit
+    const processDeposit: Transaction = await this.transactionRepository.deposit(body);
+    return processDeposit;
+  }
 
-  // update(id: number, updateTransactionDto: UpdateTransactionDto) {
-  //   return `This action updates a #${id} transaction`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} transaction`;
-  // }
 }

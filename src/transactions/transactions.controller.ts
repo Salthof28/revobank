@@ -40,5 +40,21 @@ export class TransactionsController {
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       })  
     }
-  } 
+  }
+  
+  @UseGuards(AuthGuard)
+  @Post('deposit')
+  async accountDeposit(@Body() body: CreateTransactionDto): Promise<Transaction> {
+    try {
+      const deposit: Transaction = await this.transactionsService.transactionDeposit(body);
+      return deposit;
+    } catch (error) {
+      if(error instanceof RepositoryException || error instanceof HttpException) throw error;           
+      throw new InternalServerErrorException({
+        message: 'something wrong on our side',
+        error: 'internal server error',
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      })  
+    }
+  }
 }

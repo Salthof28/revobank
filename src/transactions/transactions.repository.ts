@@ -43,6 +43,26 @@ export class TransactionsRepository implements TransactionsRepositoryItf {
     //     });
     //     return updateTransfer;
     // }
+    
+    async deposit(body: CreateTransactionDto): Promise<Transaction> {
+        const resultDeposit = await this.prisma.$transaction([
+            this.prisma.accounts.update({
+                where: { id: body.account_id },
+                data: { balance: { increment: body.amount } }
+            }),
+            this.prisma.transactions.create({
+                data: {
+                    account_id: body.account_id,
+                    transaction_type: body.transaction_type,
+                    status: "COMPLETED",
+                    amount: body.amount,
+                    code_transaction_ref: body.code_transaction_ref,
+                    description: body.description,
+                }
+            })
+        ]);
+        return resultDeposit[1];
+    }
     async withdraw(body: CreateTransactionDto): Promise<Transaction> {
         const resultWithdraw = await this.prisma.$transaction([
             this.prisma.accounts.update({
