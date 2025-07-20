@@ -9,6 +9,7 @@ import { RepositoryException } from "src/global/exception/exception.repository";
 import { OldPasswordException } from "src/user/exceptions/old-password-exception";
 import { UserNotFoundException } from "src/user/exceptions/user-not-found.exception";
 import { NotInputException } from "../exception/no-input-exception";
+import { TransferFailedException } from "src/transactions/exceptions/transfer-exception";
 
 
 
@@ -79,6 +80,13 @@ export class ExceptionFilterRepository implements ExceptionFilter {
             }
         }
         else if (exception instanceof NotInputException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.BAD_REQUEST
+            }
+        }
+        else if (exception instanceof TransferFailedException) {
             responseBody = {
                 message: exception.message,
                 error: exception.name,
