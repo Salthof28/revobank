@@ -7,6 +7,8 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { Condition } from 'src/global/entities/condition.entity';
 import { Account } from 'src/accounts/entities/account.entity';
 import { AccountNotFoundRepositoryException } from 'src/accounts/exceptions/account-not-found.exception';
+import { Prisma } from '@prisma/client';
+import { StatusAccountException } from './exceptions/status-account-exception';
 
 @Injectable()
 export class TransactionsService implements TransactionsServiceItf {
@@ -21,6 +23,14 @@ export class TransactionsService implements TransactionsServiceItf {
     ]);
     if (!accountSender) throw new AccountNotFoundRepositoryException('Your account not found');
     if (!accountReceiver) throw new AccountNotFoundRepositoryException('Destination account not found');
+    // check account status
+    if(accountSender.status === 'INACTIVE') throw new StatusAccountException();
+    if(accountReceiver.status === 'INACTIVE') throw new StatusAccountException('account receiver INACTIVE cannot transfer');
+    // check balance
+    const balanceaAccountSender = accountSender.balance ? accountSender.balance : 0; 
+    if(balanceaAccountSender < body.amount) {
+      return await this.transactionRepository.createTransactionFail(body);
+    } 
     // process transaction
     const processTransaction: Transaction = await this.transactionRepository.transfer(body);
     return processTransaction;

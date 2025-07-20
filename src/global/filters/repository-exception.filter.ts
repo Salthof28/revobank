@@ -9,7 +9,7 @@ import { RepositoryException } from "src/global/exception/exception.repository";
 import { OldPasswordException } from "src/user/exceptions/old-password-exception";
 import { UserNotFoundException } from "src/user/exceptions/user-not-found.exception";
 import { NotInputException } from "../exception/no-input-exception";
-import { TransferFailedException } from "src/transactions/exceptions/transfer-exception";
+import { StatusAccountException } from "src/transactions/exceptions/status-account-exception";
 
 
 
@@ -86,7 +86,7 @@ export class ExceptionFilterRepository implements ExceptionFilter {
                 statusCode: HttpStatus.BAD_REQUEST
             }
         }
-        else if (exception instanceof TransferFailedException) {
+        else if (exception instanceof StatusAccountException) {
             responseBody = {
                 message: exception.message,
                 error: exception.name,

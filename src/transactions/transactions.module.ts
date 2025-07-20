@@ -6,6 +6,7 @@ import { jwtConstants } from 'src/auth/constants';
 import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { PrismaModule } from 'prisma/prisma.module';
 import { AccountsModule } from 'src/accounts/accounts.module';
+import { TransactionsRepository } from './transactions.repository';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { AccountsModule } from 'src/accounts/accounts.module';
     })
   ],
   controllers: [TransactionsController],
-  providers: [TransactionsService],
+  providers: [TransactionsService, TransactionsRepository],
 })
 export class TransactionsModule {}

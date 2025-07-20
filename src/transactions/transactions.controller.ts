@@ -13,16 +13,16 @@ export class TransactionsController {
   @UseGuards(AuthGuard)
   @Post('transfer')
   async transferProcess(@Body() body: CreateTransactionDto): Promise<Transaction> {
-    try {
+    // try {
       const transfer: Transaction = await this.transactionsService.transfer(body);
       return transfer;
-    } catch (error){
-      if(error instanceof RepositoryException || error instanceof HttpException) throw error;           
-      throw new InternalServerErrorException({
-          message: 'something wrong on our side',
-          error: 'internal server error',
-          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      })     
-    }
+    // } catch (error){
+    //   if(error instanceof RepositoryException || error instanceof HttpException) throw error;           
+    //   throw new InternalServerErrorException({
+    //       message: 'something wrong on our side',
+    //       error: 'internal server error',
+    //       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+    //   })     
+    // }
   }
 }
