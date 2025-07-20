@@ -35,6 +35,11 @@ enum TransactionType {
   WITHDRAWAL
   TRANSFER
 }
+enum CodeTypeTransaction {
+  TR
+  DP
+  WH
+}
 
 
 model users {
@@ -70,16 +75,17 @@ model accounts {
 
 model transactions {
   id                                                     Int               @id @default(autoincrement())
-  account_id                                             Int?
+  account_id                                             Int
   destination_account_id                                 Int?
   transaction_type                                       TransactionType
   status                                                 TransactionStatus
   amount                                                 Decimal?          @default(0.00) @db.Decimal(17, 2)
-  transaction_ref                                        String?           @db.VarChar(100)
+  code_transaction_ref                                   CodeTypeTransaction
+  number_transaction_ref                                 Int               @default(autoincrement()) @unique
   description                                            String?           @db.VarChar(255)
   created_at                                             DateTime?         @default(now()) @db.Timestamptz(6)
   updated_at                                             DateTime?         @default(now()) @db.Timestamptz(6)
-  accounts_transactions_account_idToaccounts             accounts?         @relation("transactions_account_idToaccounts", fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  accounts_transactions_account_idToaccounts             accounts          @relation("transactions_account_idToaccounts", fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   accounts_transactions_destination_account_idToaccounts accounts?         @relation("transactions_destination_account_idToaccounts", fields: [destination_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
