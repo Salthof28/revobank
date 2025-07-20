@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionsRepositoryItf, UpdateTransaction } from './transactions.repository.interface';
+import { TransactionsRepositoryItf } from './transactions.repository.interface';
 import { PrismaService } from 'prisma/prisma.service';
 import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
@@ -43,9 +43,27 @@ export class TransactionsRepository implements TransactionsRepositoryItf {
     //     });
     //     return updateTransfer;
     // }
+    async withdraw(body: CreateTransactionDto): Promise<Transaction> {
+        const resultWithdraw = await this.prisma.$transaction([
+            this.prisma.accounts.update({
+                where: { id: body.account_id },
+                data: { balance: { decrement: body.amount } }
+            }),
+            this.prisma.transactions.create({
+                data: {
+                    account_id: body.account_id,
+                    transaction_type: body.transaction_type,
+                    status: "COMPLETED",
+                    amount: body.amount,
+                    code_transaction_ref: body.code_transaction_ref,
+                    description: body.description,
+                }
+            })
+        ]);
+        return resultWithdraw[1];
+    }
 
-    async transfer(body: CreateTransactionDto): Promise<Transaction> {
-        
+    async transfer(body: CreateTransactionDto): Promise<Transaction> { 
         const resultTransfer = await this.prisma.$transaction([
             this.prisma.accounts.update({
                 where: { id: body.account_id },
@@ -68,6 +86,5 @@ export class TransactionsRepository implements TransactionsRepositoryItf {
             })
         ]);
         return resultTransfer[2];
-
     }
 }

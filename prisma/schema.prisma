@@ -32,7 +32,7 @@ enum TransactionStatus {
 
 enum TransactionType {
   DEPOSIT
-  WITHDRAWAL
+  WITHDRAW
   TRANSFER
 }
 enum CodeTypeTransaction {

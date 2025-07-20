@@ -10,6 +10,7 @@ import { OldPasswordException } from "src/user/exceptions/old-password-exception
 import { UserNotFoundException } from "src/user/exceptions/user-not-found.exception";
 import { NotInputException } from "../exception/no-input-exception";
 import { StatusAccountException } from "src/transactions/exceptions/status-account-exception";
+import { InvalidTypeTransactionException } from "src/transactions/exceptions/invalid-type-transaction-exception";
 
 
 
@@ -87,6 +88,13 @@ export class ExceptionFilterRepository implements ExceptionFilter {
             }
         }
         else if (exception instanceof StatusAccountException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.BAD_REQUEST
+            }
+        }
+        else if (exception instanceof InvalidTypeTransactionException) {
             responseBody = {
                 message: exception.message,
                 error: exception.name,

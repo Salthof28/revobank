@@ -3,5 +3,6 @@ import { CreateTransactionDto } from "./dto/create-transaction.dto";
 
 
 export interface TransactionsServiceItf {
-    transfer(body: CreateTransactionDto): Promise<Transaction>;
+    transactionTransfer(body: CreateTransactionDto): Promise<Transaction>;
+    transactionWithdraw(body: CreateTransactionDto): Promise<Transaction>;
 }

@@ -5,10 +5,11 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 export interface TransactionsRepositoryItf {
     createTransactionFail(body: CreateTransactionDto): Promise<Transaction>;
     // updateTransaction(body: UpdateTransaction): Promise<Transaction>;
+    withdraw(body: CreateTransactionDto): Promise<Transaction>;
     transfer(body: CreateTransactionDto): Promise<Transaction>;
 }
 
-export interface UpdateTransaction {
-    id: number,
-    transaction: UpdateTransactionDto
-}
+// export interface UpdateTransaction {
+//     id: number,
+//     transaction: UpdateTransactionDto
+// }
