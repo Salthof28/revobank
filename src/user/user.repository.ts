@@ -31,7 +31,8 @@ export class UserRepository implements UserRepositoryItf  {
         const user: User | null = await this.prisma.users.findUnique({
             where: {
                 id
-            }
+            },
+            include: { accounts: true }
         })
         if(!user) return undefined;
         return user;

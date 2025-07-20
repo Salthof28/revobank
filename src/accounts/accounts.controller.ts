@@ -50,7 +50,6 @@ export class AccountsController {
         }  
     }
     @UseGuards(AuthGuard)
-    @Roles(Role.CUSTOMER)
     @Post('register')
     async createAccountByUser(@Request() request, @Body() body: CreateAccountDto) {
         try {
