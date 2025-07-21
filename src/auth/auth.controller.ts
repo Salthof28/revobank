@@ -4,13 +4,16 @@ import { CreateUserDto } from 'src/user/dto/req/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RepositoryException } from 'src/global/exception/exception.repository';
 import { User } from 'src/user/entities/user.entity';
+import { TransformRes } from 'src/global/interceptors/transform-body-res.interceptor';
+import { UserBodyDto } from 'src/user/dto/res/user-body.dto';
 
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
+  
   @Post('register')
+  @TransformRes(UserBodyDto)
   async registerUser(@Body() body: CreateUserDto): Promise<User> {
     try{
       const newUser = await this.authService.register(body)

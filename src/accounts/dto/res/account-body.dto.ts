@@ -2,9 +2,12 @@ import { Expose, Type } from "class-transformer";
 
 
 export class AccountBodyResDto {
-    // @Expose()
-    // @Type(() => Number)
-    // accountNumber: number;
+    @Expose()
+    @Type(() => Number)
+    id: number;
+    @Expose()
+    @Type(() => Number)
+    account_number: number;
     @Expose()
     @Type(() => Number)
     user_id: number;

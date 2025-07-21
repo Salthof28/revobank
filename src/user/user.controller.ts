@@ -6,9 +6,11 @@ import { RepositoryException } from 'src/global/exception/exception.repository';
 import { AuthGuard } from 'src/global/guards/auth.guard';
 import { Role } from 'src/global/enum/role.enum';
 import { Roles } from 'src/global/decorators/role.decorator';
-
+import { TransformRes } from 'src/global/interceptors/transform-body-res.interceptor';
+import { UserBodyDto } from './dto/res/user-body.dto';
 
 @Controller('user')
+@TransformRes(UserBodyDto)
 export class UserController {
     constructor(private userService: UserService) {}
 
