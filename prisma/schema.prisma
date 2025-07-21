@@ -69,8 +69,8 @@ model accounts {
   created_at                                                 DateTime?      @default(now()) @db.Timestamptz(6)
   updated_at                                                 DateTime?      @default(now()) @db.Timestamptz(6)
   users                                                      users?         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  transactions_transactions_account_idToaccounts             transactions[] @relation("transactions_account_idToaccounts")
-  transactions_transactions_destination_account_idToaccounts transactions[] @relation("transactions_destination_account_idToaccounts")
+  transactions                                               transactions[] @relation("transactions")
+  destination_transactions                                   transactions[] @relation("destination_transactions")
 }
 
 model transactions {
@@ -85,8 +85,8 @@ model transactions {
   description                                            String?           @db.VarChar(255)
   created_at                                             DateTime?         @default(now()) @db.Timestamptz(6)
   updated_at                                             DateTime?         @default(now()) @db.Timestamptz(6)
-  accounts_transactions_account_idToaccounts             accounts          @relation("transactions_account_idToaccounts", fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  accounts_transactions_destination_account_idToaccounts accounts?         @relation("transactions_destination_account_idToaccounts", fields: [destination_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  transactions                                           accounts          @relation("transactions", fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  destination_transactions                               accounts?         @relation("destination_transactions", fields: [destination_account_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 

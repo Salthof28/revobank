@@ -3,7 +3,7 @@ import { AllqueryTransac, TransactionsServiceItf, UpdateTransac } from './transa
 import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { TransactionsRepository } from './transactions.repository';
 import { Transaction } from './entities/transaction.entity';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { CreateTransactionDto } from './dto/req/create-transaction.dto';
 import { AccountNotFoundRepositoryException } from 'src/accounts/exceptions/account-not-found.exception';
 import { StatusAccountException } from './exceptions/status-account-exception';
 import { Account } from 'src/accounts/entities/account.entity';

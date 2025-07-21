@@ -1,12 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, InternalServerErrorException, HttpStatus, UseGuards, Query, ParseIntPipe } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { CreateTransactionDto } from './dto/req/create-transaction.dto';
 import { RepositoryException } from 'src/global/exception/exception.repository';
 import { Transaction } from './entities/transaction.entity';
 import { AuthGuard } from 'src/global/guards/auth.guard';
 import { Roles } from 'src/global/decorators/role.decorator';
 import { Role } from 'src/global/enum/role.enum';
+import { UpdateTransactionDto } from './dto/req/update-transaction.dto';
 
 @Controller('transactions')
 export class TransactionsController {

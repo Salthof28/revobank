@@ -19,7 +19,10 @@ export class AccountsRepository implements AccountsRepositoryItf {
             if(query.account_number) where.OR.push({account_number: query.account_number});
             if(query.branch_code) where.OR.push({branch_code: query.branch_code});
         }
-        const allAccounts: Account[] = await this.prisma.accounts.findMany({where});
+        const allAccounts: Account[] = await this.prisma.accounts.findMany({
+            where,
+            include: { transactions: true, destination_transactions: true }
+        });
         if(allAccounts.length < 1) return undefined;
         return allAccounts;
     }
@@ -29,7 +32,8 @@ export class AccountsRepository implements AccountsRepositoryItf {
         const account: Account | null = await this.prisma.accounts.findUnique({
             where: {
                 id
-            }
+            },
+            include: { transactions: true, destination_transactions: true }
         });
         if(account === null) return undefined;
         return account;
@@ -87,7 +91,8 @@ export class AccountsRepository implements AccountsRepositoryItf {
                 pin: paramBody.account.pin,
                 branch_code: paramBody.account.branch_code,
                 updated_at: new Date,
-            }
+            },
+            include: { transactions: true, destination_transactions: true }
         });
         return updateAccount;
     }
