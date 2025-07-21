@@ -7,6 +7,8 @@ import { EmailRegisteredException } from 'src/auth/exceptions/email-registered-e
 import * as bcrypt from 'bcrypt';
 import { AccountNotFoundRepositoryException } from './exceptions/account-not-found.exception';
 import { NotInputException } from 'src/global/exception/no-input-exception';
+import { AccountNumberRegisteredException } from './exceptions/account-number-registered.exception';
+import { PinAccountException } from './exceptions/pin.exception';
 
 export interface UpdatedAcc {
     accountNumber: number,
@@ -33,11 +35,11 @@ export class AccountsService implements AccountsServiceItf {
 
     async createAccount(body: CreateAccountDto): Promise<Account> {
         const checkAccountNumber: Account | undefined = await this.accountsRepository.findAccountNumber(body.account_number);
-        if(checkAccountNumber) throw new EmailRegisteredException('Account Number Registered');
+        if(checkAccountNumber) throw new AccountNumberRegisteredException();
         const saltRounds = 10;
         const pinNotHash = body.pin
-        if(pinNotHash.length < 6) throw new AccountNotFoundRepositoryException('pin is too short (standard 6 character number)');
-        else if(pinNotHash.length > 6) throw new AccountNotFoundRepositoryException('pin is too long (standard 6 character number)');
+        if(pinNotHash.length < 6) throw new PinAccountException();
+        else if(pinNotHash.length > 6) throw new PinAccountException('pin is too long (standard 6 character number)');
         body.pin = await bcrypt.hash(pinNotHash, saltRounds);
         return await this.accountsRepository.created(body);
     }
@@ -49,21 +51,21 @@ export class AccountsService implements AccountsServiceItf {
         if(!account) throw new AccountNotFoundRepositoryException()
         if(paramBody.account.account_number) {
             const checkAccountNumber: Account | undefined = await this.accountsRepository.findAccountNumber(paramBody.account.account_number);
-            if(checkAccountNumber) throw new AccountNotFoundRepositoryException('account number registered')
+            if(checkAccountNumber) throw new AccountNumberRegisteredException()
         }
         // check parambody bring newpin or not, if bring change the pin
         if(paramBody.account.pin?.trim() && paramBody.oldPin?.trim()){
             const oldPin = paramBody.oldPin
             const isMatchPin = await bcrypt.compare(oldPin, account.pin)
-            if(!isMatchPin) throw new AccountNotFoundRepositoryException('old pin invalid');
+            if(!isMatchPin) throw new PinAccountException('old pin invalid');
             const newPin = paramBody.account.pin.trim();
-            if(newPin.length < 6) throw new AccountNotFoundRepositoryException('pin is too short (standard 6 character number)');
-            else if(newPin.length > 6) throw new AccountNotFoundRepositoryException('pin is too long (standard 6 character number)');
+            if(newPin.length < 6) throw new PinAccountException('pin is too short (standard 6 character number)');
+            else if(newPin.length > 6) throw new PinAccountException();
             const newSaltRounds = 10;
             paramBody.account.pin = await bcrypt.hash(newPin, newSaltRounds);
         }
-        else if(paramBody.account.pin?.trim() && !paramBody.oldPin?.trim()) throw new NotInputException('old pin no been input');
-        else if(!paramBody.account.pin?.trim() && paramBody.oldPin?.trim()) throw new NotInputException('new pin no been input');
+        else if(paramBody.account.pin?.trim() && !paramBody.oldPin?.trim()) throw new PinAccountException('old pin no been input');
+        else if(!paramBody.account.pin?.trim() && paramBody.oldPin?.trim()) throw new PinAccountException('new pin no been input');
         account = {...account, ...paramBody.account};
         return this.accountsRepository.updated({
             id: paramBody.id,

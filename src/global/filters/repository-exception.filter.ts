@@ -12,6 +12,8 @@ import { NotInputException } from "../exception/no-input-exception";
 import { StatusAccountException } from "src/transactions/exceptions/status-account-exception";
 import { InvalidTypeTransactionException } from "src/transactions/exceptions/invalid-type-transaction-exception";
 import { TransactionNotFound } from "src/transactions/exceptions/transaction-not-found-exception";
+import { AccountNumberRegisteredException } from "src/accounts/exceptions/account-number-registered.exception";
+import { PinAccountException } from "src/accounts/exceptions/pin.exception";
 
 
 
@@ -103,6 +105,20 @@ export class ExceptionFilterRepository implements ExceptionFilter {
             }
         }
         else if (exception instanceof TransactionNotFound) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.BAD_REQUEST
+            }
+        }
+        else if (exception instanceof AccountNumberRegisteredException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.BAD_REQUEST
+            }
+        }
+        else if (exception instanceof PinAccountException) {
             responseBody = {
                 message: exception.message,
                 error: exception.name,
