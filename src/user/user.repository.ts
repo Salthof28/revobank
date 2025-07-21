@@ -22,7 +22,8 @@ export class UserRepository implements UserRepositoryItf  {
         const allUsers: User[] | null = await this.prisma.users.findMany({
             where: {
                 name
-            }
+            },
+            include: { accounts: true }
         });
         if(allUsers === null) return undefined;
         return allUsers;
@@ -90,7 +91,8 @@ export class UserRepository implements UserRepositoryItf  {
                 password: user.body.password,
                 role_user: user.body.role_user,
                 updated_at: new Date(),
-            }
+            },
+            include: { accounts: true }
         })
         return updateUser;
     }
