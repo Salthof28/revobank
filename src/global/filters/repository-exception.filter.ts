@@ -11,6 +11,7 @@ import { UserNotFoundException } from "src/user/exceptions/user-not-found.except
 import { NotInputException } from "../exception/no-input-exception";
 import { StatusAccountException } from "src/transactions/exceptions/status-account-exception";
 import { InvalidTypeTransactionException } from "src/transactions/exceptions/invalid-type-transaction-exception";
+import { TransactionNotFound } from "src/transactions/exceptions/transaction-not-found-exception";
 
 
 
@@ -95,6 +96,13 @@ export class ExceptionFilterRepository implements ExceptionFilter {
             }
         }
         else if (exception instanceof InvalidTypeTransactionException) {
+            responseBody = {
+                message: exception.message,
+                error: exception.name,
+                statusCode: HttpStatus.BAD_REQUEST
+            }
+        }
+        else if (exception instanceof TransactionNotFound) {
             responseBody = {
                 message: exception.message,
                 error: exception.name,

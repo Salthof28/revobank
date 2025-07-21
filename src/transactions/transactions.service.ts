@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionsServiceItf } from './transactions.service.interface';
+import { AllqueryTransac, TransactionsServiceItf, UpdateTransac } from './transactions.service.interface';
 import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { TransactionsRepository } from './transactions.repository';
 import { Transaction } from './entities/transaction.entity';
@@ -8,10 +8,28 @@ import { AccountNotFoundRepositoryException } from 'src/accounts/exceptions/acco
 import { StatusAccountException } from './exceptions/status-account-exception';
 import { Account } from 'src/accounts/entities/account.entity';
 import { InvalidTypeTransactionException } from './exceptions/invalid-type-transaction-exception';
+import { TransactionNotFound } from './exceptions/transaction-not-found-exception';
 
 @Injectable()
 export class TransactionsService implements TransactionsServiceItf {
   constructor(private transactionRepository: TransactionsRepository, private accountRepository: AccountsRepository){}
+
+  async getAllTransaction(query: AllqueryTransac): Promise<Transaction[]> {
+    const allTransaction: Transaction[] | undefined = await this.transactionRepository.getAll(query);
+    if(!allTransaction) throw new TransactionNotFound()
+    return allTransaction;
+  }
+
+  async getOneTransaction(id: number): Promise<Transaction> {
+    const transaction: Transaction | undefined = await this.transactionRepository.getOne(id);
+    if(!transaction) throw new TransactionNotFound();
+    return transaction;
+  }
+
+  async updateTransaction(paramBody: UpdateTransac): Promise<Transaction> {
+    const updateTransaction: Transaction = await this.transactionRepository.updateTransaction(paramBody);
+    return updateTransaction;
+  }
 
   async transactionTransfer(body: CreateTransactionDto): Promise<Transaction> {
     // check transaction type and TR
