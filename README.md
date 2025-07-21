@@ -1,98 +1,162 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 💳 RevoBank - Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A simple banking API built with **NestJS**, simulating core digital banking functionalities like user registration, login, money transfer, and transaction tracking.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📌 Project Overview
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**RevoBank** is a backend system that allows users to register, authenticate, view their account details, perform money transfers, and view transaction history. It was developed as part of a backend development course using modern technologies and clean architecture.
 
-## Project setup
+---
 
-```bash
-$ pnpm install
+## ✨ Endpoint and Features Implemented
+### 1. Endpoint
+| Feature             | Endpoint                      | Description                                                     |
+|---------------------|-------------------------------|-----------------------------------------------------------------|
+| User Registration   | `POST /auth/register`         | Create a new user account                                       |
+| User Login          | `POST /auth/login`            | Authenticate user and return a JWT                              |
+| View Profile        | `GET /users/profile`          | Retrieve current user's details                                 |
+| Specific User       | `POST /users/profile`         | Update user information (Admin and Customer)                    |
+| Specific User       | `GET /users/:id`              | Admin Retrieve details of a specific user                       |
+| Edit User           | `PATCH /users/:id`            | Update user information (Admin Only)                            |
+| Account Registration| `POST /accounts`              | Create a new bank account for a user (Admin)                    |
+| Account Registration| `POST /accounts/register`     | Create a new bank account for a user (general)                  |
+| All Account         | `GET /accounts`               | Retrieve a list of accounts with optional filters (Admin Only)  |
+| Specific Account    | `GET /accounts/:id`           | Retrieve details of a specific account                          |
+| Edit Account        | `PATCH /accounts/:id`         | Update account details                                          |
+| Delete Account      | `DELETE /accounts/:id`        | Delete an account                                               |
+| Deposit             | `POST /transactions/deposit`  | Deposit to account                                              |
+| Withdraw            | `POST /transactions/withdraw` | Withdraw from account                                           |
+| Transfer            | `POST /transactions/transfer` | Transfer between accounts                                       |
+| All Transaction     | `GET /transactions`           | Retrieve a list of transactions with filters                    |
+| Specific Transaction| `GET /transactions/:id`       | Retrieve details of a specific transaction                      |
+| Edit Transaction    | `PATCH /transactions/:id`     | Update transaction status                                       |
+
+### 2. Feature
+- **Security and Compliance**:
+
+  - JWT-based authentication for secure endpoint access.
+  - Role-based access control (e.g., admin vs. regular user).
+  - Audit logging for administrative actions (e.g., viewing accounts or transactions).
+  - Secure data transformation using DTOs to exclude sensitive fields (e.g., `pin`, `password`).
+
+- **Additional Features**:
+
+  - Pagination and filtering for large datasets (e.g., accounts and transactions).
+  - Data validation using `class-validator` for request payloads.
+  - Custom interceptor (`TransformResInterceptor`) to transform responses into DTOs for consistency and security.
+
+---
+
+## Technologies Used
+
+The Revobank API is built using the following technologies:
+
+- **Framework**: NestJS (v10.x) - A progressive Node.js framework for building efficient and scalable server-side applications.
+- **ORM**: Prisma (v5.x) - A modern database toolkit for TypeScript and Node.js, used for database interactions and schema management.
+- **Database**: PostgreSQL - A powerful, open-source relational database for storing user, account, and transaction data.
+- **Authentication**: JSON Web Tokens (JWT) - For secure user authentication and authorization.
+- **Data Transformation**: `class-transformer` and `class-validator` - For transforming and validating API responses and requests.
+- **Package Manager**: pnpm - For efficient dependency management.
+- **Other Libraries**:
+  - `@nestjs/config` for environment variable management.
+  - `@nestjs/jwt` and `@nestjs/passport` for authentication.
+  - `bcrypt` for password hashing.
+- **Development Tools**:
+  - TypeScript (v5.x) for type-safe code.
+  - ESLint and Prettier for code linting and formatting.
+  - NestJS CLI for project scaffolding and build management.
+
+## How to Run the Project Locally
+
+Follow these steps to set up and run the Revobank API locally.
+
+### Prerequisites
+
+- **Node.js**: v22.12.0 or later
+- **pnpm**: v8.x or later (`npm install -g pnpm`)
+- **PostgreSQL**: v14.x or later, installed and running locally or on a hosted service
+- **Git**: For cloning the repository
+
+### Setup Instructions
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone <repository-url>
+   cd milestone-4-Salthof28
+   ```
+
+2. **Install Dependencies**:
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Set Up Environment Variables**:
+
+   - Copy the `.env.example` file to `.env`:
+
+     ```bash
+     cp .env.example .env
+     ```
+   - Update `.env` with your configuration:
+
+     ```env
+     DATABASE_URL="postgresql://<user>:<password>@localhost:5432/revobank?schema=public"
+     ```
+   - **Note**: Replace `<user>`, `<password>`, and other values with your PostgreSQL credentials.
+
+4. **Set Up the Database**:
+
+   - Run Prisma migrations to create the database schema:
+
+     ```bash
+     npx prisma migrate dev --name init
+     ```
+   - Generate Prisma Client:
+
+     ```bash
+     npx prisma generate
+     ```
+   - (Optional) Seed the database with sample data:
+
+     ```bash
+     npx prisma db seed
+     ```
+
+5. **Build the Project**:
+
+   ```bash
+   pnpm run build
+   ```
+
+6. **Run the Application**:
+
+   - For development (with hot reload):
+
+     ```bash
+     pnpm run start:dev
+     ```
+
+7. **Access the API**:
+
+   - The API will be available at `http://localhost:3000`.
+   - Use tools like Postman or cURL to test endpoints (e.g., `POST /auth/register`, `GET /accounts`).
+
+### Database Configuration
+
+- **Schema**: The database schema is defined in `prisma/schema.prisma`. Key models include:
+  - `User`: Stores user information (e.g., email, password hash).
+  - `Account`: Stores bank account details (e.g., `account_number`, `balance`, `sourceTransactions`, `destinationTransactions`).
+  - `Transaction`: Stores transaction records (e.g., `account_id`, `destination_account_id`, `amount`).
+  - `AuditLog`: Stores logs of administrative actions for compliance.
+- **Migration**: Use `npx prisma migrate dev` to apply schema changes.
+- **Seeding**: Implement a seeding script (e.g., `prisma/seed.ts`) to populate the database with sample data for testing.
+
+### Example `.env.example`
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/revobank"
 ```
-
-## Compile and run the project
-
-```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
