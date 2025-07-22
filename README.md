@@ -17,7 +17,7 @@ A simple banking API built with **NestJS**, simulating core digital banking func
 | User Registration   | `POST /auth/register`         | Create a new user account                                       |
 | User Login          | `POST /auth/login`            | Authenticate user and return a JWT                              |
 | View Profile        | `GET /users/profile`          | Retrieve current user's details                                 |
-| Edit Profile        | `PATCH /users/profile`         | Update user information (Admin and Customer)                    |
+| Edit Profile        | `PATCH /users/profile`        | Update user information (Admin and Customer)                    |
 | Specific User       | `GET /users/:id`              | Admin Retrieve details of a specific user                       |
 | Edit User           | `PATCH /users/:id`            | Update user information (Admin Only)                            |
 | Account Registration| `POST /accounts`              | Create a new bank account for a user (Admin)                    |
@@ -160,3 +160,57 @@ Follow these steps to set up and run the Revobank API locally.
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/revobank"
 ```
+
+
+## 📷 Screenshot Postman Demo
+### 1. Register
+  - `Failed Register because email registered`:
+  ![](./image-markdown/user-auth/email-registered.png)
+  - `Failed Register because phone registered`:
+  ![](./image-markdown/user-auth/phone-registered.png)
+  - `Failed Register because KTP registered`:
+  ![](./image-markdown/user-auth/ktp-registered.png)
+  - `Registered Success`:
+  ![](./image-markdown/user-auth/registered.png)
+### 2. Login
+  - `Login Feedback`:
+  ![](./image-markdown/user-auth/login.png)
+### 3. Profile
+  - `Get Profile`:
+  ![](./image-markdown/user-auth/profile.png)
+  - `Edit Profile`:
+  ![](./image-markdown/user-auth/change-profile.png)
+### 4. Account
+  - `Register Account Failed beacause number account registered`:
+  ![](./image-markdown/account/account-number-registered.png)
+  - `Account Registered Success (All User)`:
+  ![](./image-markdown/account/account-registered.png)
+  - `Account Registered (Admin Only)`:
+  ![](./image-markdown/account/account-registered-adminOnly.png)
+  - `Change Pin Account (Admin Only)`:
+  ![](./image-markdown/account/change-pin.png)
+  - `Failed Change Pin Account (Admin Only)`:
+  ![](./image-markdown/account/failed-change-pin.png)
+  - `Get All Account (Admin Only)`:
+  ![](./image-markdown/account/all-account-adminOnly.png)
+  - `Get One Account`:
+  ![](./image-markdown/account/getOneAccount.png)
+### 5. Transaction
+  - `Transaction fail because pin wrong (example transfer)`:
+  ![](./image-markdown/transaction/transfer-fail-pinWrong.png)
+  - `Transaction fail because insufficient balance (example transfer)`:
+  ![](./image-markdown/transaction/transfer-fail-balance.png)
+  - `Transfer`:
+  ![](./image-markdown/transaction/transfer-success.png)
+  - `Withdraw`:
+  ![](./image-markdown/transaction/withdraw.png)
+  - `Deposit`:
+  ![](./image-markdown/transaction/deposit.png)
+  - `Change Status Transaction (Admin Only)`:
+  ![](./image-markdown/transaction/change-status-transaction-AdminOnly.png)
+  ![](./image-markdown/transaction/change-status-transaction-AdminOnly2.png)
+  - `Get All Transaction (Admin Only)`:
+  ![](./image-markdown/transaction/getAllTransaction-adminOnly.png)
+
+## Author
+🔧 Salman Althof
