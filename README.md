@@ -17,7 +17,7 @@ A simple banking API built with **NestJS**, simulating core digital banking func
 | User Registration   | `POST /auth/register`         | Create a new user account                                       |
 | User Login          | `POST /auth/login`            | Authenticate user and return a JWT                              |
 | View Profile        | `GET /users/profile`          | Retrieve current user's details                                 |
-| Specific User       | `POST /users/profile`         | Update user information (Admin and Customer)                    |
+| Edit Profile        | `PATCH /users/profile`         | Update user information (Admin and Customer)                    |
 | Specific User       | `GET /users/:id`              | Admin Retrieve details of a specific user                       |
 | Edit User           | `PATCH /users/:id`            | Update user information (Admin Only)                            |
 | Account Registration| `POST /accounts`              | Create a new bank account for a user (Admin)                    |

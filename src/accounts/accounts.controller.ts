@@ -72,7 +72,6 @@ export class AccountsController {
     }
 
     @UseGuards(AuthGuard)
-    @Roles(Role.ADMIN)
     @Get('/:id')
     async getAccount(@Param('id', ParseIntPipe) id: number) {
         try{
@@ -89,6 +88,7 @@ export class AccountsController {
     }
 
     @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
     @Patch('/:id')
     updateAccount(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateAccountDto & { oldPin?: string }) {
         try {

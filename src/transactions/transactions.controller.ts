@@ -35,7 +35,6 @@ export class TransactionsController {
   }
 
   @UseGuards(AuthGuard)
-  @Roles(Role.ADMIN)
   @Get(':id')
   async getOneTransaction (@Param('id', ParseIntPipe) id: number): Promise<Transaction> {
     try {
