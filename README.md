@@ -24,7 +24,7 @@ A simple banking API built with **NestJS**, simulating core digital banking func
 | Account Registration| `POST /accounts/register`     | Create a new bank account for a user (general)                  |
 | All Account         | `GET /accounts`               | Retrieve a list of accounts with optional filters (Admin Only)  |
 | Specific Account    | `GET /accounts/:id`           | Retrieve details of a specific account                          |
-| Edit Account        | `PATCH /accounts/:id`         | Update account details                                          |
+| Edit Account        | `PATCH /accounts/:id`         | Update account details (Admin Only)                                          |
 | Delete Account      | `DELETE /accounts/:id`        | Delete an account                                               |
 | Deposit             | `POST /transactions/deposit`  | Deposit to account                                              |
 | Withdraw            | `POST /transactions/withdraw` | Withdraw from account                                           |

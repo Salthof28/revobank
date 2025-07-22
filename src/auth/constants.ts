@@ -1,3 +1,5 @@
+import { config } from 'dotenv'
+config()
 export const jwtConstants = {
-  secret: 'FakeJWTForDevelopment',
+  secret: process.env.SECRET,
 };
