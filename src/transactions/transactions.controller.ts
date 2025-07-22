@@ -7,6 +7,7 @@ import { AuthGuard } from 'src/global/guards/auth.guard';
 import { Roles } from 'src/global/decorators/role.decorator';
 import { Role } from 'src/global/enum/role.enum';
 import { UpdateTransactionDto } from './dto/req/update-transaction.dto';
+import { PinAccountException } from 'src/accounts/exceptions/pin.exception';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -72,9 +73,13 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Post('transfer')
-  async accountTransfer(@Body() body: CreateTransactionDto): Promise<Transaction> {
+  async accountTransfer(@Body() body: CreateTransactionDto & { pinAccount: string }): Promise<Transaction> {
     try {
-      const transfer: Transaction = await this.transactionsService.transactionTransfer(body);
+      if(!body.pinAccount) throw new PinAccountException('please input your pin'); 
+      const transfer: Transaction = await this.transactionsService.transactionTransfer({
+        body,
+        pinAccount: body.pinAccount
+      });
       return transfer;
     } catch (error){
       if(error instanceof RepositoryException || error instanceof HttpException) throw error;           
@@ -88,9 +93,13 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Post('withdraw')
-  async accountWithdraw(@Body() body: CreateTransactionDto): Promise<Transaction> {
+  async accountWithdraw(@Body() body: CreateTransactionDto & { pinAccount: string }): Promise<Transaction> {
     try {
-      const withdraw: Transaction = await this.transactionsService.transactionWithdraw(body);
+      if(!body.pinAccount) throw new PinAccountException('please input your pin'); 
+      const withdraw: Transaction = await this.transactionsService.transactionWithdraw({
+        body,
+        pinAccount: body.pinAccount
+      });
       return withdraw;
     } catch (error) {
       if(error instanceof RepositoryException || error instanceof HttpException) throw error;           
@@ -104,9 +113,13 @@ export class TransactionsController {
   
   @UseGuards(AuthGuard)
   @Post('deposit')
-  async accountDeposit(@Body() body: CreateTransactionDto): Promise<Transaction> {
+  async accountDeposit(@Body() body: CreateTransactionDto & { pinAccount: string }): Promise<Transaction> {
     try {
-      const deposit: Transaction = await this.transactionsService.transactionDeposit(body);
+      if(!body.pinAccount) throw new PinAccountException('please input your pin'); 
+      const deposit: Transaction = await this.transactionsService.transactionDeposit({
+        body,
+        pinAccount: body.pinAccount
+      });
       return deposit;
     } catch (error) {
       if(error instanceof RepositoryException || error instanceof HttpException) throw error;           

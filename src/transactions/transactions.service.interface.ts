@@ -7,9 +7,9 @@ export interface TransactionsServiceItf {
     getAllTransaction(query: AllqueryTransac): Promise<Transaction[]>
     getOneTransaction(id: number): Promise<Transaction>
     updateTransaction(paramBody: UpdateTransac): Promise<Transaction>
-    transactionTransfer(body: CreateTransactionDto): Promise<Transaction>;
-    transactionWithdraw(body: CreateTransactionDto): Promise<Transaction>;
-    transactionDeposit(body: CreateTransactionDto): Promise<Transaction>;
+    transactionTransfer(transferData: TransactionDat): Promise<Transaction>;
+    transactionWithdraw(withdrawData: TransactionDat): Promise<Transaction>;
+    transactionDeposit(depositData: TransactionDat): Promise<Transaction>;
 }
 
 export interface UpdateTransac {
@@ -20,4 +20,9 @@ export interface AllqueryTransac {
     transaction_type: string,
     status: string,
     code_transaction_ref: string
+}
+
+export interface TransactionDat {
+    pinAccount: string,
+    body: CreateTransactionDto
 }
