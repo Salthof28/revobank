@@ -2,7 +2,7 @@
 import { User } from "./entities/user.entity";
 import {  Updated, UserRepositoryItf } from "./user.repository.interface";
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "prisma/prisma.service";
+import { PrismaService } from "../../prisma/prisma.service";
 import { CreateUserDto } from "./dto/req/create-user.dto";
 import { Condition } from "src/global/entities/condition.entity";
 
@@ -18,7 +18,7 @@ export class UserRepository implements UserRepositoryItf  {
         //     throw new Error('PrismaService is not initialized');
         // }
     }
-    async getAll(name: string): Promise<User[] | undefined> {
+    async getAll(name?: string): Promise<User[] | undefined> {
         const allUsers: User[] | null = await this.prisma.users.findMany({
             where: {
                 name

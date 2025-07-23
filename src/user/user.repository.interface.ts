@@ -5,7 +5,7 @@ import { Condition } from "src/global/entities/condition.entity";
 
 
 export interface UserRepositoryItf {
-    getAll(name: string): Promise<User[] | undefined>;
+    getAll(name?: string): Promise<User[] | undefined>;
     getOne(id: number): Promise<User | undefined>;
     updated(paramBody: Updated): Promise<User>;
     created(body: CreateUserDto): Promise<User>;
@@ -17,7 +17,7 @@ export interface UserRepositoryItf {
 
 export interface Updated {
     id?: number,
-    body: UpdateUserDto
+    body: UpdateUserDto | Partial<CreateUserDto>
 }
 
 
