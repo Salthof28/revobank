@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
-import { ResponseTransactionDto } from "src/transactions/dto/res/res-transaction.dto";
-import { Transaction } from "src/transactions/entities/transaction.entity";
+import { ResponseTransactionDto } from "../../../transactions/dto/res/res-transaction.dto";
+// import { Transaction } from "src/transactions/entities/transaction.entity";
 
 
 export class AccountBodyResDto {

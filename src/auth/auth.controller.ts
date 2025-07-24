@@ -1,16 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode, HttpStatus, InternalServerErrorException } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { CreateUserDto } from 'src/user/dto/req/create-user.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode, HttpStatus, InternalServerErrorException, Inject } from '@nestjs/common';
+import { CreateUserDto } from '../user/dto/req/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { RepositoryException } from 'src/global/exception/exception.repository';
+import { RepositoryException } from '../global/exception/exception.repository';
 import { User } from 'src/user/entities/user.entity';
-import { TransformRes } from 'src/global/interceptors/transform-body-res.interceptor';
-import { UserBodyDto } from 'src/user/dto/res/user-body.dto';
+import { TransformRes } from '../global/interceptors/transform-body-res.interceptor';
+import { UserBodyDto } from '../user/dto/res/user-body.dto';
+import { AuthServiceItf } from './auth.service.interface';
 
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(@Inject('AuthServiceItf') private readonly authService: AuthServiceItf) {}
   
   @Post('register')
   @TransformRes(UserBodyDto)

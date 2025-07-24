@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
-import { AccountBodyResDto } from "src/accounts/dto/res/account-body.dto";
-import { Account } from "src/accounts/entities/account.entity";
+import { AccountBodyResDto } from "../../../accounts/dto/res/account-body.dto";
+import { Account } from "../../../accounts/entities/account.entity";
 
 export class UserBodyDto {
     @Expose()
