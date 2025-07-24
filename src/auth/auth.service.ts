@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/user/user.repository';
 import { AuthServiceItf } from './auth.service.interface';
 import { User } from 'src/user/entities/user.entity';
@@ -13,12 +13,13 @@ import { PhoneRegisteredException } from './exceptions/phone-registered-exceptio
 import { KtpRegisteredException } from './exceptions/ktp-registered-exception';
 import { InvalidLoginException } from './exceptions/invalid-login-exception';
 import { Condition } from 'src/global/entities/condition.entity';
+import { UserRepositoryItf } from 'src/user/user.repository.interface';
 
 const scrypt = promisify(_scrypt);
 @Injectable()
 
 export class AuthService implements AuthServiceItf  {
-  constructor(private userRepository: UserRepository, private jwtService: JwtService) {}
+  constructor(@Inject('UserRepositoryItf') private userRepository: UserRepositoryItf, private jwtService: JwtService) {}
 
   async register(body: CreateUserDto): Promise<User> {
     // chceking email, phone, and ktp registered

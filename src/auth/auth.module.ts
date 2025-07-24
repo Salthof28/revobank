@@ -17,6 +17,10 @@ import { UserModule } from 'src/user/user.module';
       signOptions: { expiresIn: '7d' }
     })],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    { provide: 'UserRepositoryItf', useClass: UserRepository }
+  ],
+    
 })
 export class AuthModule {}

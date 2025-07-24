@@ -1,4 +1,4 @@
-import { RepositoryException } from "src/global/exception/exception.repository";
+import { RepositoryException } from "../../global/exception/exception.repository";
 
 
 export class InvalidLoginException extends RepositoryException {
