@@ -15,7 +15,10 @@ import { jwtConstants } from '../auth/constants';
     })
   ],
   controllers: [AccountsController],
-  providers: [AccountsService, AccountsRepository],
-  exports: [AccountsRepository]
+  providers: [
+    { provide: 'AccountsServiceItf', useClass: AccountsService },
+    { provide: 'AccountsRepositoryItf', useClass: AccountsRepository }
+  ],
+  exports: ['AccountsRepositoryItf']
 })
 export class AccountsModule {}

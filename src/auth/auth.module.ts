@@ -18,7 +18,6 @@ import { UserModule } from '../user/user.module';
   controllers: [AuthController],
   providers: [
     { provide: 'AuthServiceItf', useClass: AuthService },
-    { provide: 'UserRepositoryItf', useClass: UserRepository }
   ],
     
 })

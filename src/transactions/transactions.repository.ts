@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Allquery, TransactionsRepositoryItf, UpdateTransaction } from './transactions.repository.interface';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AccountsRepository } from '../accounts/accounts.repository';
 import { CreateTransactionDto } from './dto/req/create-transaction.dto';
 import { Transaction } from './entities/transaction.entity';
+import { AccountsRepositoryItf } from 'src/accounts/accounts.repository.interface';
 
 @Injectable()
 export class TransactionsRepository implements TransactionsRepositoryItf {
-    constructor(private prisma: PrismaService, private accountsRepository: AccountsRepository){}
+    constructor(private prisma: PrismaService, @Inject('AccountsRepositoryItf') private accountsRepository: AccountsRepositoryItf){}
 
     async getAll(query: Allquery): Promise<Transaction[] | undefined> {
         const where: any = {};

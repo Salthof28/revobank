@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AllqueryTransac, TransactionDat, TransactionsServiceItf, UpdateTransac } from './transactions.service.interface';
 import { AccountsRepository } from '../accounts/accounts.repository';
 import { TransactionsRepository } from './transactions.repository';
@@ -10,10 +10,12 @@ import { InvalidTypeTransactionException } from './exceptions/invalid-type-trans
 import { TransactionNotFound } from './exceptions/transaction-not-found-exception';
 import { PinAccountException } from '../accounts/exceptions/pin.exception';
 import * as bcrypt from 'bcrypt';
+import { AccountsRepositoryItf } from '../accounts/accounts.repository.interface';
+import { TransactionsRepositoryItf } from './transactions.repository.interface';
 
 @Injectable()
 export class TransactionsService implements TransactionsServiceItf {
-  constructor(private transactionRepository: TransactionsRepository, private accountRepository: AccountsRepository){}
+  constructor(@Inject('TransactionsRepositoryItf') private transactionRepository: TransactionsRepositoryItf, @Inject('AccountsRepositoryItf') private accountRepository: AccountsRepositoryItf){}
 
   async getAllTransaction(query: AllqueryTransac): Promise<Transaction[]> {
     const allTransaction: Transaction[] | undefined = await this.transactionRepository.getAll(query);

@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, InternalServerErrorException, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
-import { AccountsService } from './accounts.service';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Inject, InternalServerErrorException, Param, ParseIntPipe, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { UpdateAccountDto } from './dto/req/update-account.dto';
 import { CreateAccountDto } from './dto/req/create-account.dto';
 import { RepositoryException } from '../global/exception/exception.repository';
@@ -8,11 +7,12 @@ import { Role } from '../global/enum/role.enum';
 import { Roles } from '../global/decorators/role.decorator';
 import { TransformRes } from '../global/interceptors/transform-body-res.interceptor';
 import { AccountBodyResDto } from './dto/res/account-body.dto';
+import { AccountsServiceItf } from './accounts.service.interface';
 
 @Controller('accounts')
 @TransformRes(AccountBodyResDto)
 export class AccountsController {
-    constructor(private accountsService: AccountsService) {}
+    constructor(@Inject('AccountsServiceItf') private accountsService: AccountsServiceItf) {}
 
     @UseGuards(AuthGuard)
     @Roles(Role.ADMIN)

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, InternalServerErrorException, HttpStatus, UseGuards, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, InternalServerErrorException, HttpStatus, UseGuards, Query, ParseIntPipe, Inject } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/req/create-transaction.dto';
 import { RepositoryException } from '../global/exception/exception.repository';
@@ -8,10 +8,11 @@ import { Roles } from '../global/decorators/role.decorator';
 import { Role } from '../global/enum/role.enum';
 import { UpdateTransactionDto } from './dto/req/update-transaction.dto';
 import { PinAccountException } from '../accounts/exceptions/pin.exception';
+import { TransactionsServiceItf } from './transactions.service.interface';
 
 @Controller('transactions')
 export class TransactionsController {
-  constructor(private readonly transactionsService: TransactionsService) {}
+  constructor(@Inject('TransactionsServiceItf') private readonly transactionsService: TransactionsServiceItf) {}
   
   @UseGuards(AuthGuard)
   @Roles(Role.ADMIN)

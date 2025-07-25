@@ -1,14 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { AccountsRepository } from './accounts.repository';
+import { Inject, Injectable } from '@nestjs/common';
 import { Account } from './entities/account.entity';
 import { AccountsServiceItf, GetAllAccounts, UpdateAccount } from './accounts.service.interface';
 import { CreateAccountDto } from './dto/req/create-account.dto';
-import { EmailRegisteredException } from 'src/auth/exceptions/email-registered-exception';
 import * as bcrypt from 'bcrypt';
 import { AccountNotFoundRepositoryException } from './exceptions/account-not-found.exception';
-import { NotInputException } from 'src/global/exception/no-input-exception';
 import { AccountNumberRegisteredException } from './exceptions/account-number-registered.exception';
 import { PinAccountException } from './exceptions/pin.exception';
+import { AccountsRepositoryItf } from './accounts.repository.interface';
 
 export interface UpdatedAcc {
     accountNumber: number,
@@ -19,7 +17,7 @@ export interface Pararam {
 }
 @Injectable()
 export class AccountsService implements AccountsServiceItf {
-    constructor(private accountsRepository: AccountsRepository) {}
+    constructor(@Inject('AccountsRepositoryItf') private accountsRepository: AccountsRepositoryItf) {}
 
     async getAllAccounts(query: GetAllAccounts): Promise<Account[]> {
         const allAccounts: Account[] | undefined = await this.accountsRepository.getAll(query);

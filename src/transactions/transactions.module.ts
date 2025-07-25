@@ -6,6 +6,7 @@ import { jwtConstants } from '../auth/constants';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { AccountsModule } from '../accounts/accounts.module';
 import { TransactionsRepository } from './transactions.repository';
+import { AccountsRepository } from 'src/accounts/accounts.repository';
 
 @Module({
   imports: [
@@ -17,6 +18,9 @@ import { TransactionsRepository } from './transactions.repository';
     })
   ],
   controllers: [TransactionsController],
-  providers: [TransactionsService, TransactionsRepository],
+  providers: [
+    { provide: 'TransactionsServiceItf', useClass: TransactionsService }, 
+    { provide: 'TransactionsRepositoryItf', useClass: TransactionsRepository },
+  ],
 })
 export class TransactionsModule {}
