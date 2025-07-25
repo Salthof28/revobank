@@ -11,9 +11,9 @@ export class AccountsRepository implements AccountsRepositoryItf {
 
     constructor(private prisma: PrismaService){}
 
-    async getAll(query: GetAll): Promise<Account[] | undefined> {
+    async getAll(query?: GetAll): Promise<Account[] | undefined> {
         const where: any = {};
-        if(query.account_name || query.account_number || query.branch_code) {
+        if(query?.account_name || query?.account_number || query?.branch_code) {
             where.OR = [];
             if(query.account_name) where.OR.push({account_name: query.account_name});
             if(query.account_number) where.OR.push({account_number: query.account_number});

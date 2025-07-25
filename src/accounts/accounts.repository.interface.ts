@@ -3,7 +3,7 @@ import { UpdateAccountDto } from "./dto/req/update-account.dto";
 import { Account } from "./entities/account.entity";
 
 export interface AccountsRepositoryItf {
-    getAll(query: GetAll): Promise<Account[] | undefined>;
+    getAll(query?: GetAll): Promise<Account[] | undefined>;
     getOne(id: number): Promise<Account | undefined>;
     updated(paramBody: Update): Promise<Account>;
     findAccountNumber(account_number: string): Promise<Account | undefined>
@@ -12,9 +12,9 @@ export interface AccountsRepositoryItf {
 }
 
 export interface GetAll {
-    account_name: string;
-    account_number: string;
-    branch_code: string
+    account_name?: string;
+    account_number?: string;
+    branch_code?: string
 }
 
 export interface Created {
