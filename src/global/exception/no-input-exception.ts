@@ -1,4 +1,4 @@
-import { RepositoryException } from "src/global/exception/exception.repository";
+import { RepositoryException } from "./exception.repository";
 
 
 export class NotInputException extends RepositoryException {

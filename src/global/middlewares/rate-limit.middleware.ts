@@ -12,9 +12,14 @@ interface RateLimitParam {
 export class RateLimitMiddleware implements NestMiddleware {
     private request: RateLimitParam = {}
 
-    private readonly windowMs = 10*1000;
+    private readonly windowMs = 60*1000;
     private readonly maxRequest = 10;
     use(req: Request, res: Response, next: NextFunction){
+        // if environment test, skip rate limit
+        if (process.env.NODE_ENV === 'test') {
+            return next();
+        }
+        
         const ip = String(req.ip);
         const currentTime = Date.now();
 

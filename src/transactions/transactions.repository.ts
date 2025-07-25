@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Allquery, TransactionsRepositoryItf, UpdateTransaction } from './transactions.repository.interface';
-import { PrismaService } from 'prisma/prisma.service';
-import { AccountsRepository } from 'src/accounts/accounts.repository';
+import { PrismaService } from '../../prisma/prisma.service';
+import { AccountsRepository } from '../accounts/accounts.repository';
 import { CreateTransactionDto } from './dto/req/create-transaction.dto';
 import { Transaction } from './entities/transaction.entity';
 

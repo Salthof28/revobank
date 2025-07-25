@@ -4,12 +4,12 @@ import { User } from './entities/user.entity';
 import { UserNotFoundException } from './exceptions/user-not-found.exception';
 import { scrypt as _scrypt, randomBytes } from "crypto"; // change name function callback to _scrypt
 import { promisify } from 'util';
-import { EmailRegisteredException } from 'src/auth/exceptions/email-registered-exception';
-import { PhoneRegisteredException } from 'src/auth/exceptions/phone-registered-exception';
-import { KtpRegisteredException } from 'src/auth/exceptions/ktp-registered-exception';
-import { Condition } from 'src/global/entities/condition.entity';
+import { EmailRegisteredException } from '../auth/exceptions/email-registered-exception';
+import { PhoneRegisteredException } from '../auth/exceptions/phone-registered-exception';
+import { KtpRegisteredException } from '../auth/exceptions/ktp-registered-exception';
+import { Condition } from '../global/entities/condition.entity';
 import { OldPasswordException } from './exceptions/old-password-exception';
-import { NotInputException } from 'src/global/exception/no-input-exception';
+import { NotInputException } from '../global/exception/no-input-exception';
 import { UserRepositoryItf } from './user.repository.interface';
 
 

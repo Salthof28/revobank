@@ -3,9 +3,8 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UserRepository } from './user.repository';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from 'src/auth/constants';
-import { PrismaService } from 'prisma/prisma.service';
-import { PrismaModule } from 'prisma/prisma.module';
+import { jwtConstants } from '../auth/constants';
+import { PrismaModule } from '../../prisma/prisma.module';
 
 @Module({
   imports: [

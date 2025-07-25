@@ -1,19 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from 'src/user/user.repository';
 import { AuthServiceItf } from './auth.service.interface';
 import { User } from 'src/user/entities/user.entity';
 // import { mockUsers } from 'src/user/data/mock-user';
 import { JwtService } from '@nestjs/jwt';
 import { scrypt as _scrypt, randomBytes } from "crypto"; // change name function callback to _scrypt
 import { promisify } from "util";
-import { CreateUserDto } from 'src/user/dto/req/create-user.dto';
+import { CreateUserDto } from '../user/dto/req/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { EmailRegisteredException } from './exceptions/email-registered-exception';
 import { PhoneRegisteredException } from './exceptions/phone-registered-exception';
 import { KtpRegisteredException } from './exceptions/ktp-registered-exception';
 import { InvalidLoginException } from './exceptions/invalid-login-exception';
-import { Condition } from 'src/global/entities/condition.entity';
-import { UserRepositoryItf } from 'src/user/user.repository.interface';
+import { Condition } from '../global/entities/condition.entity';
+import { UserRepositoryItf } from '../user/user.repository.interface';
 
 const scrypt = promisify(_scrypt);
 @Injectable()

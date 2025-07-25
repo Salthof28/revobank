@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode, Htt
 import { CreateUserDto } from '../user/dto/req/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RepositoryException } from '../global/exception/exception.repository';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import { TransformRes } from '../global/interceptors/transform-body-res.interceptor';
 import { UserBodyDto } from '../user/dto/res/user-body.dto';
 import { AuthServiceItf } from './auth.service.interface';

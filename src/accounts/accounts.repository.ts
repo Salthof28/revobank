@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { Account } from "./entities/account.entity";
 import { AccountsRepositoryItf,  GetAll, Update } from "./accounts.repository.interface";
 // import { error } from "console";
-import { PrismaService } from "prisma/prisma.service";
+import { PrismaService } from "../../prisma/prisma.service";
 import { CreateAccountDto } from "./dto/req/create-account.dto";
 
 

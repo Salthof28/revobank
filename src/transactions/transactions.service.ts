@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { AllqueryTransac, TransactionDat, TransactionsServiceItf, UpdateTransac } from './transactions.service.interface';
-import { AccountsRepository } from 'src/accounts/accounts.repository';
+import { AccountsRepository } from '../accounts/accounts.repository';
 import { TransactionsRepository } from './transactions.repository';
 import { Transaction } from './entities/transaction.entity';
-import { CreateTransactionDto } from './dto/req/create-transaction.dto';
-import { AccountNotFoundRepositoryException } from 'src/accounts/exceptions/account-not-found.exception';
+import { AccountNotFoundRepositoryException } from '../accounts/exceptions/account-not-found.exception';
 import { StatusAccountException } from './exceptions/status-account-exception';
-import { Account } from 'src/accounts/entities/account.entity';
+import { Account } from '../accounts/entities/account.entity';
 import { InvalidTypeTransactionException } from './exceptions/invalid-type-transaction-exception';
 import { TransactionNotFound } from './exceptions/transaction-not-found-exception';
-import { PinAccountException } from 'src/accounts/exceptions/pin.exception';
+import { PinAccountException } from '../accounts/exceptions/pin.exception';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
