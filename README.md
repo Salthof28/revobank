@@ -58,6 +58,7 @@ The Revobank API is built using the following technologies:
 - **Database**: PostgreSQL - A powerful, open-source relational database for storing user, account, and transaction data.
 - **Authentication**: JSON Web Tokens (JWT) - For secure user authentication and authorization.
 - **Data Transformation**: `class-transformer` and `class-validator` - For transforming and validating API responses and requests.
+- **Testing**: Jest (v29.x) - For unit and integration testing of services and controllers.
 - **Package Manager**: pnpm - For efficient dependency management.
 - **Other Libraries**:
   - `@nestjs/config` for environment variable management.
@@ -211,6 +212,10 @@ DATABASE_URL="postgresql://user:password@localhost:5432/revobank"
   ![](./image-markdown/transaction/change-status-transaction-AdminOnly2.png)
   - `Get All Transaction (Admin Only)`:
   ![](./image-markdown/transaction/getAllTransaction-adminOnly.png)
+
+## Demo 
+
+**Live Demo:** [revobank](revobank-production.up.railway.app)
 
 ## Author
 🔧 Salman Althof
