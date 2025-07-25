@@ -4,7 +4,7 @@ import { User } from "./entities/user.entity";
 
 
 export interface UserServiceItf {
-    getAllUsers(name: string): Promise<User[]>;
+    getAllUsers(name?: string): Promise<User[]>;
     adminGetUser(id: number): Promise<User>;
     updateUserProfile(paramBody: UpdateUser): Promise<User>;
     getProfileUser(request: number): Promise<User>;

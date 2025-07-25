@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { jwtConstants } from "src/auth/constants";
+import { jwtConstants } from "../../auth/constants";
 import { Request } from "express";
 import { Reflector } from "@nestjs/core";
 import { Role } from "../enum/role.enum";

@@ -12,7 +12,7 @@ import { Condition } from "src/global/entities/condition.entity";
 @Injectable()
 export class UserRepository implements UserRepositoryItf  {
 
-    constructor( private prisma: PrismaService) {
+    constructor(private prisma: PrismaService) {
         // console.log('time:', new Date());
         // if (!this.prisma) {
         //     throw new Error('PrismaService is not initialized');

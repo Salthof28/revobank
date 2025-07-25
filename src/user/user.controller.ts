@@ -1,23 +1,23 @@
-import { Body, Controller, Get, HttpStatus, InternalServerErrorException, Param, ParseIntPipe, Patch, Query, Request, UseGuards } from '@nestjs/common';
-import { UserService } from './user.service';
+import { Body, Controller, Get, HttpStatus, Inject, InternalServerErrorException, Param, ParseIntPipe, Patch, Query, Request, UseGuards } from '@nestjs/common';
 import { UpdateUserDto } from './dto/req/update-user.dto';
 import { User } from './entities/user.entity';
-import { RepositoryException } from 'src/global/exception/exception.repository';
-import { AuthGuard } from 'src/global/guards/auth.guard';
-import { Role } from 'src/global/enum/role.enum';
-import { Roles } from 'src/global/decorators/role.decorator';
-import { TransformRes } from 'src/global/interceptors/transform-body-res.interceptor';
+import { RepositoryException } from '../global/exception/exception.repository';
+import { AuthGuard } from '../global/guards/auth.guard';
+import { Role } from '../global/enum/role.enum';
+import { Roles } from '../global/decorators/role.decorator';
+import { TransformRes } from '../global/interceptors/transform-body-res.interceptor';
 import { UserBodyDto } from './dto/res/user-body.dto';
+import { UserServiceItf } from './user.service.interface';
 
 @Controller('user')
 @TransformRes(UserBodyDto)
 export class UserController {
-    constructor(private userService: UserService) {}
+    constructor(@Inject('UserServiceItf') private readonly userService: UserServiceItf) {}
 
     @UseGuards(AuthGuard)
     @Roles(Role.ADMIN)
     @Get()
-    adminGetAllUsers(@Query('name') name: string): Promise<User[]> {
+    adminGetAllUsers(@Query('name') name?: string): Promise<User[]> {
         try{
             const allUsers = this.userService.getAllUsers(name);
             return allUsers;
@@ -30,8 +30,13 @@ export class UserController {
     @UseGuards(AuthGuard)
     @Get('profile')
     async getProfileUser(@Request() request): Promise<User> {
-        const userProfile = await this.userService.getProfileUser(request.user.id);
-        return userProfile;
+        try{
+            const userProfile = await this.userService.getProfileUser(request.user.id);
+            return userProfile;
+        } catch (error) {
+            if(error instanceof RepositoryException) throw error;
+            throw new InternalServerErrorException()           
+        }
     }
     
     @UseGuards(AuthGuard)

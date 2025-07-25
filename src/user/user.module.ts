@@ -16,7 +16,10 @@ import { PrismaModule } from 'prisma/prisma.module';
     })
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
-  exports: [UserRepository]
+  providers: [
+    { provide: 'UserServiceItf' , useClass: UserService },
+    {provide: 'UserRepositoryItf', useClass: UserRepository }
+  ],
+  exports: ['UserRepositoryItf']
 })
 export class UserModule {}

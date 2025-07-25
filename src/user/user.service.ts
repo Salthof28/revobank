@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { UserRepository } from './user.repository';
+import { Inject, Injectable } from '@nestjs/common';
 import { UpdateUser, UserServiceItf } from './user.service.interface';
 import { User } from './entities/user.entity';
 import { UserNotFoundException } from './exceptions/user-not-found.exception';
@@ -11,19 +10,20 @@ import { KtpRegisteredException } from 'src/auth/exceptions/ktp-registered-excep
 import { Condition } from 'src/global/entities/condition.entity';
 import { OldPasswordException } from './exceptions/old-password-exception';
 import { NotInputException } from 'src/global/exception/no-input-exception';
+import { UserRepositoryItf } from './user.repository.interface';
 
 
 const scrypt = promisify(_scrypt);
 @Injectable()
  
 export class UserService implements UserServiceItf  {
-    constructor(private userRepository: UserRepository) {}
+    constructor(@Inject('UserRepositoryItf') private readonly userRepository: UserRepositoryItf) {}
 
     // getAllUsers(query: GetAllUsers): User[] {
     //     return this.userRepository.getAll(query);
     // }
 
-    async getAllUsers(name: string): Promise<User[]> {
+    async getAllUsers(name?: string): Promise<User[]> {
         const allUsers: User[] | undefined = await this.userRepository.getAll(name);
         if(!allUsers) throw new UserNotFoundException();
         return allUsers;
