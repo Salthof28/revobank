@@ -32,17 +32,17 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() body: LoginUserDto): Promise<{ access_token: string }> {
-    try{
+    // try{
       const loginUser = await this.authService.login(body)
       return loginUser;
-    } catch (error) {
-      if(error instanceof RepositoryException) throw error;
-      throw new InternalServerErrorException({
-        message: 'something wrong on our side',
-        error: 'internal server error',
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      })
-    }
+    // } catch (error) {
+    //   if(error instanceof RepositoryException) throw error;
+      // throw new InternalServerErrorException({
+      //   message: 'something wrong on our side',
+      //   error: 'internal server error',
+      //   statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+      // })
+    // }
   }
 
 }
