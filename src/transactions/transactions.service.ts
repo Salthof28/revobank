@@ -17,7 +17,7 @@ import { TransactionsRepositoryItf } from './transactions.repository.interface';
 export class TransactionsService implements TransactionsServiceItf {
   constructor(@Inject('TransactionsRepositoryItf') private transactionRepository: TransactionsRepositoryItf, @Inject('AccountsRepositoryItf') private accountRepository: AccountsRepositoryItf){}
 
-  async getAllTransaction(query: AllqueryTransac): Promise<Transaction[]> {
+  async getAllTransaction(query?: AllqueryTransac): Promise<Transaction[]> {
     const allTransaction: Transaction[] | undefined = await this.transactionRepository.getAll(query);
     if(!allTransaction) throw new TransactionNotFound()
     return allTransaction;

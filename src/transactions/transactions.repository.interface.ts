@@ -4,7 +4,7 @@ import { CodeTypeTransaction, TransactionType } from '@prisma/client';
 import { UpdateTransactionDto } from './dto/req/update-transaction.dto';
 
 export interface TransactionsRepositoryItf {
-    getAll(query: Allquery): Promise<Transaction[] | undefined>
+    getAll(query?: Allquery): Promise<Transaction[] | undefined>
     getOne(id: number): Promise<Transaction | undefined>
     updateTransaction(body: UpdateTransaction): Promise<Transaction>
     createTransactionFail(body: CreateTransactionDto): Promise<Transaction>;
@@ -19,7 +19,7 @@ export interface UpdateTransaction {
 }
 
 export interface Allquery {
-    transaction_type: string,
-    status: string,
-    code_transaction_ref: string
+    transaction_type?: string,
+    status?: string,
+    code_transaction_ref?: string
 }

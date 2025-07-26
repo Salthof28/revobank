@@ -10,9 +10,9 @@ import { AccountsRepositoryItf } from 'src/accounts/accounts.repository.interfac
 export class TransactionsRepository implements TransactionsRepositoryItf {
     constructor(private prisma: PrismaService, @Inject('AccountsRepositoryItf') private accountsRepository: AccountsRepositoryItf){}
 
-    async getAll(query: Allquery): Promise<Transaction[] | undefined> {
+    async getAll(query?: Allquery): Promise<Transaction[] | undefined> {
         const where: any = {};
-        if(query.code_transaction_ref || query.status || query.transaction_type) {
+        if(query?.code_transaction_ref || query?.status || query?.transaction_type) {
             if(query.code_transaction_ref) where.OR.push({code_transaction_ref: query.code_transaction_ref});
             if(query.status) where.OR.push({status: query.status});
             if(query.transaction_type) where.OR.push({transaction_type: query.transaction_type});

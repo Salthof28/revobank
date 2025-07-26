@@ -4,7 +4,7 @@ import { UpdateTransactionDto } from "./dto/req/update-transaction.dto";
 
 
 export interface TransactionsServiceItf {
-    getAllTransaction(query: AllqueryTransac): Promise<Transaction[]>
+    getAllTransaction(query?: AllqueryTransac): Promise<Transaction[]>
     getOneTransaction(id: number): Promise<Transaction>
     updateTransaction(paramBody: UpdateTransac): Promise<Transaction>
     transactionTransfer(transferData: TransactionDat): Promise<Transaction>;
@@ -17,9 +17,9 @@ export interface UpdateTransac {
     transaction: UpdateTransactionDto
 }
 export interface AllqueryTransac {
-    transaction_type: string,
-    status: string,
-    code_transaction_ref: string
+    transaction_type?: string,
+    status?: string,
+    code_transaction_ref?: string
 }
 
 export interface TransactionDat {
