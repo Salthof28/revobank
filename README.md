@@ -215,7 +215,7 @@ DATABASE_URL="postgresql://user:password@localhost:5432/revobank"
 
 ## Demo 
 
-**Live Demo:** [revobank](revobank-production.up.railway.app)
+**Live Demo:** [revobank](https://revobank-production.up.railway.app/)
 
 ## Author
 🔧 Salman Althof
