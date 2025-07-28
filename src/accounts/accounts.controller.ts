@@ -17,7 +17,7 @@ export class AccountsController {
     @UseGuards(AuthGuard)
     @Roles(Role.ADMIN)
     @Get()
-    async getAllAccounts(@Query('account_name') account_name: string, @Query('account_number') account_number: string, @Query('branch_code') branch_code: string) {
+    async getAllAccounts(@Query('account_name') account_name?: string, @Query('account_number') account_number?: string, @Query('branch_code') branch_code?: string) {
         try {
             const allAccounts = await this.accountsService.getAllAccounts({
                 account_name,
