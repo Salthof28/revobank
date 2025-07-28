@@ -75,6 +75,15 @@ describe('Testing Auth Repository', () => {
 
         const result = await repositoryTransaction.getAll();
         expect(result).toEqual(mockAllTransaction);
-        expect(mockPrismaService.transactions.findMany).toHaveBeenCalledWith({where: { OR: undefined }})
+        expect(prismaSerMock.transactions.findMany).toHaveBeenCalledWith({where: { OR: undefined }})
     });
+
+    test('getAll Transaction with filter', async () => {
+        mockPrismaService.transactions.findMany.mockResolvedValue(
+            mockAllTransaction.filter(transaction => transaction.code_transaction_ref === 'TR')
+        );
+
+        const result = await repositoryTransaction.getAll({code_transaction_ref: 'TR'});
+        expect(result).toEqual(mockAllTransaction);
+    })
 })

@@ -13,6 +13,7 @@ export class TransactionsRepository implements TransactionsRepositoryItf {
     async getAll(query?: Allquery): Promise<Transaction[] | undefined> {
         const where: any = {};
         if(query?.code_transaction_ref || query?.status || query?.transaction_type) {
+            where.OR = [];
             if(query.code_transaction_ref) where.OR.push({code_transaction_ref: query.code_transaction_ref});
             if(query.status) where.OR.push({status: query.status});
             if(query.transaction_type) where.OR.push({transaction_type: query.transaction_type});
