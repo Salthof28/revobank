@@ -55,7 +55,7 @@ export class AuthService implements AuthServiceItf  {
 
     if(storedHash !== hash.toString('hex')) throw new InvalidLoginException();
     // return user;
-    const payload = { id: user.id, email: user.email, name: user.name, phone: user.phone, number_ktp: user.number_ktp, role_user: user.role_user }
+    const payload = { id: user.id,  role_user: user.role_user }
 
     return {
       access_token: await this.jwtService.signAsync(payload)
