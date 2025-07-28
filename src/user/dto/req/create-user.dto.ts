@@ -1,18 +1,18 @@
 import { RoleUser } from "@prisma/client";
-import { IsNumber, IsString } from "class-validator";
+import { IsEmail, IsNumber, IsString, Matches } from "class-validator";
 // import { RoleUser } from "generated/prisma";
 
 
 export class CreateUserDto {
     // @IsNumber()
     // id: number;
-    @IsString()
+    @IsEmail()
     email: string;
     @IsString()
     name: string;
-    @IsString()
+    @Matches(/^\d{10,15}$/, { message: 'Phone must be a valid number' })
     phone: string;
-    @IsString()
+    @Matches(/^\d{16}$/, { message: 'KTP must be 16 digits' })
     number_ktp: string;
     @IsString()
     password: string;

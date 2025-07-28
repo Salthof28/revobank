@@ -57,8 +57,8 @@ export class AccountsService implements AccountsServiceItf {
             const isMatchPin = await bcrypt.compare(oldPin, account.pin)
             if(!isMatchPin) throw new PinAccountException('old pin invalid');
             const newPin = paramBody.account.pin.trim();
-            if(newPin.length < 6) throw new PinAccountException('pin is too short (standard 6 character number)');
-            else if(newPin.length > 6) throw new PinAccountException();
+            if(newPin.length < 6) throw new PinAccountException();
+            else if(newPin.length > 6) throw new PinAccountException('pin is too long (standard 6 character number)');
             const newSaltRounds = 10;
             paramBody.account.pin = await bcrypt.hash(newPin, newSaltRounds);
         }
