@@ -19,7 +19,7 @@ export interface Pararam {
 export class AccountsService implements AccountsServiceItf {
     constructor(@Inject('AccountsRepositoryItf') private accountsRepository: AccountsRepositoryItf) {}
 
-    async getAllAccounts(query: GetAllAccounts): Promise<Account[]> {
+    async getAllAccounts(query?: GetAllAccounts): Promise<Account[]> {
         const allAccounts: Account[] | undefined = await this.accountsRepository.getAll(query);
         if(!allAccounts) throw new AccountNotFoundRepositoryException();
         return allAccounts;
