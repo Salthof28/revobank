@@ -17,7 +17,7 @@ export class TransactionsController {
   @UseGuards(AuthGuard)
   @Roles(Role.ADMIN)
   @Get()
-  async getAllTransaction(@Query('transaction_type') transaction_type: string, @Query('status') status: string, @Query('code_transaction_ref') code_transaction_ref: string): Promise<Transaction[]> {
+  async getAllTransaction(@Query('transaction_type') transaction_type?: string, @Query('status') status?: string, @Query('code_transaction_ref') code_transaction_ref?: string): Promise<Transaction[]> {
     try {
       const allTransaction: Transaction[] = await this.transactionsService.getAllTransaction({
         transaction_type,
