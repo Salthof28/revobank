@@ -69,7 +69,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.getAll();
         expect(result).toEqual(mockAllAccount);
-        expect(mockPrismaService.accounts.findMany).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.findMany).toHaveBeenCalledWith({
             where: {},
             include:{ transactions: true, destination_transactions: true }
         });
@@ -82,7 +82,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.getAll({ account_name: 'Jane' });
         expect(result).toEqual([mockAllAccount[0]]);
-        expect(mockPrismaService.accounts.findMany).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.findMany).toHaveBeenCalledWith({
             where: { OR: [{ account_name: 'Jane' }]},
             include:{ transactions: true, destination_transactions: true }
         });
@@ -95,7 +95,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.getAll({ account_name: 'Ultramilk Taiga' });
         expect(result).toEqual(undefined);
-        expect(mockPrismaService.accounts.findMany).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.findMany).toHaveBeenCalledWith({
             where: { OR: [{ account_name: 'Ultramilk Taiga' }]},
             include:{ transactions: true, destination_transactions: true }
         });
@@ -108,7 +108,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.getOne(1);
         expect(result).toEqual(mockAllAccount[0]);
-        expect(mockPrismaService.accounts.findUnique).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.findUnique).toHaveBeenCalledWith({
             where: { id: 1 },
             include:{ transactions: true, destination_transactions: true }
         });
@@ -134,7 +134,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.findAccountNumber('4121');
         expect(result).toEqual(mockAllAccount[0]);
-        expect(mockPrismaService.accounts.findUnique).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.findUnique).toHaveBeenCalledWith({
             where: { account_number: '4121' }
         });
     });
@@ -146,7 +146,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.findAccountNumber('888');
         expect(result).toEqual(undefined);
-        expect(mockPrismaService.accounts.findUnique).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.findUnique).toHaveBeenCalledWith({
             where: { account_number: '888' }
         });
     });
@@ -167,7 +167,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.created(createAccount);
         expect(result).toEqual(mockAllAccount[1]);
-        expect(mockPrismaService.accounts.create).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.create).toHaveBeenCalledWith({
             data: {
                 user_id: createAccount.user_id,
                 account_number: createAccount.account_number,
@@ -191,7 +191,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.updated(updateAccount);
         expect(result).toEqual(mockAllAccount[1]);
-        expect(mockPrismaService.accounts.update).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.update).toHaveBeenCalledWith({
             where: {
                 id: updateAccount.id
             },
@@ -209,7 +209,7 @@ describe('AccountsRepository', () => {
 
         const result = await repository.deleted(1);
         expect(result).toEqual(mockAllAccount[0]);
-        expect(mockPrismaService.accounts.delete).toHaveBeenCalledWith({
+        expect(prismaSerMock.accounts.delete).toHaveBeenCalledWith({
             where: {
                 id: 1
             },
