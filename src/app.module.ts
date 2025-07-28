@@ -7,9 +7,19 @@ import { LoggerMiddleware } from './global/middlewares/logger.middleware';
 import { RateLimitMiddleware } from './global/middlewares/rate-limit.middleware';
 import { AuthModule } from './auth/auth.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AccountsModule, UserModule, AuthModule, TransactionsModule],
+  imports: [
+    AccountsModule,
+    UserModule,
+    AuthModule,
+    TransactionsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env'
+    })
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
