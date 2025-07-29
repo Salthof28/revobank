@@ -6,14 +6,19 @@ import { User } from '../user/entities/user.entity';
 import { TransformRes } from '../global/interceptors/transform-body-res.interceptor';
 import { UserBodyDto } from '../user/dto/res/user-body.dto';
 import { AuthServiceItf } from './auth.service.interface';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(@Inject('AuthServiceItf') private readonly authService: AuthServiceItf) {}
   
   @Post('register')
   @TransformRes(UserBodyDto)
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiBody({ type: CreateUserDto })
+  @ApiResponse({ status: 201, description: 'User successfully registered', type: UserBodyDto })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async registerUser(@Body() body: CreateUserDto): Promise<User> {
     try{
       const newUser = await this.authService.register(body)
@@ -31,6 +36,18 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
+  @ApiOperation({ summary: 'Login user and get access token' })
+  @ApiBody({ type: LoginUserDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User successfully logged in',
+    schema: {
+      example: {
+        access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+      },
+    },
+  })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async login(@Body() body: LoginUserDto): Promise<{ access_token: string }> {
     try{
       const loginUser = await this.authService.login(body)

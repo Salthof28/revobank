@@ -9,6 +9,8 @@ import { Role } from '../global/enum/role.enum';
 import { UpdateTransactionDto } from './dto/req/update-transaction.dto';
 import { PinAccountException } from '../accounts/exceptions/pin.exception';
 import { TransactionsServiceItf } from './transactions.service.interface';
+import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ResponseTransactionDto } from './dto/res/res-transaction.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -17,6 +19,10 @@ export class TransactionsController {
   @UseGuards(AuthGuard)
   @Roles(Role.ADMIN)
   @Get()
+  @ApiOperation({ summary: 'get all transactions user (admin only)' })
+  @ApiQuery({ name: 'status', required: false, description: 'status transaction (optional)' })
+  @ApiResponse({ status: 200, description: 'success get all transactions user', type: ResponseTransactionDto, isArray: true })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async getAllTransaction(@Query('transaction_type') transaction_type?: string, @Query('status') status?: string, @Query('code_transaction_ref') code_transaction_ref?: string): Promise<Transaction[]> {
     try {
       const allTransaction: Transaction[] = await this.transactionsService.getAllTransaction({
@@ -37,6 +43,10 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiOperation({ summary: 'get transaction by id' })
+  @ApiParam({ name: 'id', type: 'number', description: 'id transaction' })
+  @ApiResponse({ status: 200, description: 'success get transaction by id', type: ResponseTransactionDto })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async getOneTransaction (@Param('id', ParseIntPipe) id: number): Promise<Transaction> {
     try {
       const transaction: Transaction = await this.transactionsService.getOneTransaction(id);
@@ -54,6 +64,11 @@ export class TransactionsController {
   @UseGuards(AuthGuard)
   @Roles(Role.ADMIN)
   @Patch(':id')
+  @ApiOperation({ summary: 'update a new transaction (admin only)' })
+  @ApiParam({ name: 'id', type: 'number', description: 'id account' })
+  @ApiBody({ type: CreateTransactionDto })
+  @ApiResponse({ status: 200, description: 'transaction successfully updated', type: ResponseTransactionDto })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async updateTransaction(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateTransactionDto): Promise<Transaction> {
     try {
       const updateTransaction: Transaction = await this.transactionsService.updateTransaction({
@@ -73,6 +88,10 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Post('transfer')
+  @ApiOperation({ summary: 'create a new transfer' })
+  @ApiBody({ type: CreateTransactionDto })
+  @ApiResponse({ status: 201, description: 'transfer successfully created', type: ResponseTransactionDto })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async accountTransfer(@Body() body: CreateTransactionDto & { pinAccount: string }): Promise<Transaction> {
     try {
       if(!body.pinAccount) throw new PinAccountException('please input your pin'); 
@@ -93,6 +112,10 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Post('withdraw')
+  @ApiOperation({ summary: 'create a new withdraw' })
+  @ApiBody({ type: CreateTransactionDto })
+  @ApiResponse({ status: 201, description: 'withdraw successfully created', type: ResponseTransactionDto })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async accountWithdraw(@Body() body: CreateTransactionDto & { pinAccount: string }): Promise<Transaction> {
     try {
       if(!body.pinAccount) throw new PinAccountException('please input your pin'); 
@@ -113,6 +136,10 @@ export class TransactionsController {
   
   @UseGuards(AuthGuard)
   @Post('deposit')
+  @ApiOperation({ summary: 'create a new deposit' })
+  @ApiBody({ type: CreateTransactionDto })
+  @ApiResponse({ status: 201, description: 'deposit successfully created', type: ResponseTransactionDto })
+  @ApiResponse({ status: 500, description: 'Internal server error' })
   async accountDeposit(@Body() body: CreateTransactionDto & { pinAccount: string }): Promise<Transaction> {
     try {
       if(!body.pinAccount) throw new PinAccountException('please input your pin'); 
