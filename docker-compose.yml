@@ -1,0 +1,9 @@
+
+services:
+  nest-todo:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    container_name: nest-todo
