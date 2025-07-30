@@ -49,13 +49,13 @@ export class AuthController {
   })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   async login(@Body() body: LoginUserDto): Promise<{ access_token: string }> {
-    try{
+    // try{
       const loginUser = await this.authService.login(body)
       return loginUser;
-    } catch (error) {
-      if(error instanceof RepositoryException) throw error;
-      throw new InternalServerErrorException()
-    }
+    // } catch (error) {
+    //   if(error instanceof RepositoryException) throw error;
+    //   throw new InternalServerErrorException()
+    // }
   }
 
 }
