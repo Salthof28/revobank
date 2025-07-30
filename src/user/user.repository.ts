@@ -1,7 +1,7 @@
 // import { mockUsers } from "./data/mock-user";
 import { User } from "./entities/user.entity";
 import {  Updated, UserRepositoryItf } from "./user.repository.interface";
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CreateUserDto } from "./dto/req/create-user.dto";
 import { Condition } from "src/global/entities/condition.entity";
@@ -55,13 +55,24 @@ export class UserRepository implements UserRepositoryItf  {
     }
 
     async findEmail(email: string): Promise<User | undefined> {
-        const user = await this.prisma.users.findUnique({
-            where: {
-                email,
-            },
-        });
-        if(user === null) return undefined;
-        return user;
+        try{
+            const user = await this.prisma.users.findUnique({
+                where: {
+                    email,
+                },
+            });
+            if(user === null) return undefined;
+            return user;
+        } catch (error) {
+            if (error.code === 'P2002') {
+                throw new HttpException('Account number already exists', HttpStatus.BAD_REQUEST);
+            }
+            if (error.code === 'P2003') {
+                throw new HttpException('Invalid user_id', HttpStatus.BAD_REQUEST);
+            }
+            throw new HttpException('Failed to create account', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     async created(body: CreateUserDto): Promise<User> {   
