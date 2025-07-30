@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AccountsController } from './accounts.controller';
 import { AccountsServiceItf } from './accounts.service.interface';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '../global/guards/auth.guard';
 
 describe('AccountsController', () => {
   let controller: AccountsController;
@@ -49,7 +50,7 @@ describe('AccountsController', () => {
         { provide: 'AccountsServiceItf', useValue: mockService },
         JwtService
       ]
-    }).compile();
+    }).overrideGuard(AuthGuard).useValue({ canActive: jest.fn(() => true) }).compile();
 
     controller = module.get<AccountsController>(AccountsController);
     service= module.get<AccountsServiceItf>('AccountsServiceItf')

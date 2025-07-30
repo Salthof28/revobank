@@ -72,6 +72,6 @@ describe('TransactionsService', () => {
 
     const result = await service.getAllTransaction();
     expect(result).toEqual(mockAllTransaction);
-    expect(mockTransactionRepository.getAll).toHaveBeenCalledWith(undefined);
+    expect(repositoryTransaction.getAll).toHaveBeenCalledWith(undefined);
   });
 });

@@ -7,6 +7,7 @@ import { EmailRegisteredException } from './exceptions/email-registered-exceptio
 import { RepositoryException } from '../global/exception/exception.repository';
 import { access } from 'fs';
 import { LoginUserDto } from './dto/login-user.dto';
+import { AuthGuard } from '../global/guards/auth.guard';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -38,7 +39,7 @@ describe('AuthController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
       providers: [{ provide: 'AuthServiceItf', useValue: mockAuthService }],
-    }).compile();
+    }).overrideGuard(AuthGuard).useValue({ canActive: jest.fn(() => true) }).compile();
 
     controller = module.get<AuthController>(AuthController);
     authServiceMock = module.get<AuthServiceItf>('AuthServiceItf')
@@ -49,20 +50,20 @@ describe('AuthController', () => {
 
     const resultRegister = await controller.registerUser(mockCreateUser);
     expect(resultRegister).toEqual({id: 1, ...mockCreateUser});
-    expect(mockAuthService.register).toHaveBeenCalledWith(mockCreateUser);
+    expect(authServiceMock.register).toHaveBeenCalledWith(mockCreateUser);
   });
 
   test('registerUser catch custom error', async () => {
     mockAuthService.register.mockRejectedValue(mockCustomError);
 
     await expect(controller.registerUser(mockCreateUser)).rejects.toThrow(RepositoryException);
-    expect(mockAuthService.register).toHaveBeenCalledWith(mockCreateUser);
+    expect(authServiceMock.register).toHaveBeenCalledWith(mockCreateUser);
   });
 
   test('registerUser catch default error', async () => {
     mockAuthService.register.mockRejectedValue(mockErrorDefault);
     await expect(controller.registerUser(mockCreateUser)).rejects.toThrow(Error);
-    expect(mockAuthService.register).toHaveBeenCalledWith(mockCreateUser);
+    expect(authServiceMock.register).toHaveBeenCalledWith(mockCreateUser);
   })
 
   test('login Success', async () => {
@@ -71,21 +72,21 @@ describe('AuthController', () => {
     
     const resultLogin = await controller.login(mockLogin);
     expect(resultLogin).toEqual(tokenWalawe);
-    expect(mockAuthService.login).toHaveBeenCalledWith(mockLogin);
+    expect(authServiceMock.login).toHaveBeenCalledWith(mockLogin);
   });
 
   test('login catch custom error', async () => {
     mockAuthService.login.mockRejectedValue(mockCustomError);
 
     await expect(controller.login(mockLogin)).rejects.toThrow(RepositoryException);
-    expect(mockAuthService.login).toHaveBeenCalledWith(mockLogin);
+    expect(authServiceMock.login).toHaveBeenCalledWith(mockLogin);
   });
 
   test('login catch default error', async () => {
     mockAuthService.login.mockRejectedValue(mockErrorDefault);
 
     await expect(controller.login(mockLogin)).rejects.toThrow(Error);
-    expect(mockAuthService.login).toHaveBeenCalledWith(mockLogin);
+    expect(authServiceMock.login).toHaveBeenCalledWith(mockLogin);
   })
 
 });

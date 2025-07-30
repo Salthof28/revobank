@@ -228,7 +228,7 @@ describe('Testing Auth Repository', () => {
                 number_ktp: updateUser.body.number_ktp,
                 password: updateUser.body.password,
                 role_user: updateUser.body.role_user,
-                updated_at: new Date(),
+                updated_at: expect.any(Date),
             },
             include: { accounts: true }
         })

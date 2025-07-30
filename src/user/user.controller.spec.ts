@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { RepositoryException } from '../global/exception/exception.repository';
 import { Update } from 'src/accounts/accounts.repository.interface';
 import { UpdateUserDto } from './dto/req/update-user.dto';
+import { AuthGuard } from '../global/guards/auth.guard';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -56,7 +57,7 @@ describe('UserController', () => {
         { provide: 'UserServiceItf', useValue: mockUserService },
         JwtService
       ]
-    }).compile();
+    }).overrideGuard(AuthGuard).useValue({ canActive: jest.fn(() => true) }).compile();
 
     controller = module.get<UserController>(UserController);
     userServiceMock = module.get<UserServiceItf>('UserServiceItf')
@@ -76,21 +77,21 @@ describe('UserController', () => {
 
     const resultGetAllUser = await controller.adminGetAllUsers('Bolobolo');
     expect(resultGetAllUser).toEqual([mockAllUsers[0]]);
-    expect(mockUserService.getAllUsers).toHaveBeenCalledWith('Bolobolo')
+    expect(userServiceMock.getAllUsers).toHaveBeenCalledWith('Bolobolo')
   });
 
   test('adminGetAllUsers catch custom error', async () => {
     mockUserService.getAllUsers.mockRejectedValue(mockCustomError);
 
     await expect(controller.adminGetAllUsers()).rejects.toThrow(RepositoryException);
-    expect(mockUserService.getAllUsers).toHaveBeenCalledWith(undefined);
+    expect(userServiceMock.getAllUsers).toHaveBeenCalledWith(undefined);
   });
 
   test('adminGetAllUsers catch custom error', async () => {
     mockUserService.getAllUsers.mockRejectedValue(mockDefaultError);
 
     await expect(controller.adminGetAllUsers()).rejects.toThrow(Error);
-    expect(mockUserService.getAllUsers).toHaveBeenCalledWith(undefined);
+    expect(userServiceMock.getAllUsers).toHaveBeenCalledWith(undefined);
   });
 
   test('getProfileUser success request', async () => {
@@ -100,21 +101,21 @@ describe('UserController', () => {
 
     const result = await controller.getProfileUser(mockRequest);
     expect(result).toEqual(mockAllUsers[0]);
-    expect(mockUserService.getProfileUser).toHaveBeenCalledWith(mockRequest.user.id)
+    expect(userServiceMock.getProfileUser).toHaveBeenCalledWith(mockRequest.user.id)
   });
 
   test('getProfileUser catch custom error', async () => {
     mockUserService.getProfileUser.mockRejectedValue(mockCustomError);
 
     await expect(controller.getProfileUser(mockRequest)).rejects.toThrow(RepositoryException);
-    expect(mockUserService.getProfileUser).toHaveBeenCalledWith(mockRequest.user.id)
+    expect(userServiceMock.getProfileUser).toHaveBeenCalledWith(mockRequest.user.id)
   });
 
   test('getProfileUser catch default error', async () => {
     mockUserService.getProfileUser.mockRejectedValue(mockDefaultError);
 
     await expect(controller.getProfileUser(mockRequest)).rejects.toThrow(Error);
-    expect(mockUserService.getProfileUser).toHaveBeenCalledWith(mockRequest.user.id)
+    expect(userServiceMock.getProfileUser).toHaveBeenCalledWith(mockRequest.user.id)
   });
 
   test('updatedUserProfile success request', async () => {
@@ -122,7 +123,7 @@ describe('UserController', () => {
 
     const result = await controller.updatedUserProfile(mockRequest, mockUpdate);
     expect(result).toEqual(mockAllUsers[1]);
-    expect(mockUserService.updateUserProfile).toHaveBeenCalledWith({
+    expect(userServiceMock.updateUserProfile).toHaveBeenCalledWith({
       id: mockRequest.user.id,
       body: mockUpdate,
       oldPassword: mockUpdate.oldPassword
@@ -133,7 +134,7 @@ describe('UserController', () => {
     mockUserService.updateUserProfile.mockRejectedValue(mockCustomError);
 
     await expect(controller.updatedUserProfile(mockRequest, mockUpdate)).rejects.toThrow(RepositoryException);
-    expect(mockUserService.updateUserProfile).toHaveBeenCalledWith({
+    expect(userServiceMock.updateUserProfile).toHaveBeenCalledWith({
       id: mockRequest.user.id,
       body: mockUpdate,
       oldPassword: mockUpdate.oldPassword
@@ -144,7 +145,7 @@ describe('UserController', () => {
     mockUserService.updateUserProfile.mockRejectedValue(mockDefaultError);
 
     await expect(controller.updatedUserProfile(mockRequest, mockUpdate)).rejects.toThrow(Error);
-    expect(mockUserService.updateUserProfile).toHaveBeenCalledWith({
+    expect(userServiceMock.updateUserProfile).toHaveBeenCalledWith({
       id: mockRequest.user.id,
       body: mockUpdate,
       oldPassword: mockUpdate.oldPassword
@@ -158,21 +159,21 @@ describe('UserController', () => {
 
     const result = await controller.adminGetUser(1);
     expect(result).toEqual(mockAllUsers[0]);
-    expect(mockUserService.adminGetUser).toHaveBeenCalledWith(1)
+    expect(userServiceMock.adminGetUser).toHaveBeenCalledWith(1)
   });
 
   test('adminGetUser catch custom error', async () => {
     mockUserService.adminGetUser.mockRejectedValue(mockCustomError);
 
     await expect(controller.adminGetUser(1)).rejects.toThrow(RepositoryException);
-    expect(mockUserService.adminGetUser).toHaveBeenCalledWith(1)
+    expect(userServiceMock.adminGetUser).toHaveBeenCalledWith(1)
   });
 
   test('adminGetUser catch default error', async () => {
     mockUserService.adminGetUser.mockRejectedValue(mockDefaultError);
 
     await expect(controller.adminGetUser(1)).rejects.toThrow(Error);
-    expect(mockUserService.adminGetUser).toHaveBeenCalledWith(1)
+    expect(userServiceMock.adminGetUser).toHaveBeenCalledWith(1)
   });
 
 });

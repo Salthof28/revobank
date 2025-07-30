@@ -68,12 +68,12 @@ describe('AuthService', () => {
     
     await expect(authSerMock.register(createMockUser)).rejects.toThrow(EmailRegisteredException);
 
-    expect(mockUsersRepository.findExistingUser).toHaveBeenCalledWith([
+    expect(userRepoMock.findExistingUser).toHaveBeenCalledWith([
       {email: createMockUser.email},
       {phone: createMockUser.phone},
       {number_ktp: createMockUser.number_ktp},
     ]);
-    expect(mockUsersRepository.created).not.toHaveBeenCalled();
+    expect(userRepoMock.created).not.toHaveBeenCalled();
   });
 
   test('Test register (PhoneRegisteredException)', async () => {
@@ -83,12 +83,12 @@ describe('AuthService', () => {
     
     await expect(authSerMock.register(createMockUser)).rejects.toThrow(PhoneRegisteredException);
 
-    expect(mockUsersRepository.findExistingUser).toHaveBeenCalledWith([
+    expect(userRepoMock.findExistingUser).toHaveBeenCalledWith([
       {email: createMockUser.email},
       {phone: createMockUser.phone},
       {number_ktp: createMockUser.number_ktp},
     ]);
-    expect(mockUsersRepository.created).not.toHaveBeenCalled();
+    expect(userRepoMock.created).not.toHaveBeenCalled();
   });
 
   test('register user success', async () => {
@@ -99,12 +99,12 @@ describe('AuthService', () => {
 
     const result = await authSerMock.register(createMockUser);
     expect(result).toEqual(mockUser);
-    expect(mockUsersRepository.findExistingUser).toHaveBeenCalledWith([
+    expect(userRepoMock.findExistingUser).toHaveBeenCalledWith([
       {email: createMockUser.email},
       {phone: createMockUser.phone},
       {number_ktp: createMockUser.number_ktp},
     ]);
-    expect(mockUsersRepository.created).toHaveBeenCalledWith(createMockUser);
+    expect(userRepoMock.created).toHaveBeenCalledWith(createMockUser);
     expect(createMockUser.password).not.toEqual('john123');
     const [salt, hash] = createMockUser.password.split('.');
     expect(salt).toBeDefined();
@@ -116,7 +116,7 @@ describe('AuthService', () => {
     await authSerMock.register(createMockUser);
     // mockcoba.password = createMockUser.password;
     mockUsersRepository.findEmail.mockResolvedValue(createMockUser);
-    console.log(createMockUser);
+    // console.log(createMockUser);
     const login = {
       email: 'john@mail.com',
       password: 'john123',
@@ -129,7 +129,7 @@ describe('AuthService', () => {
     mockUsersRepository.findEmail.mockResolvedValue(mockUser);
 
     await expect(authSerMock.login(mockUser)).rejects.toThrow(InvalidLoginException);
-    expect(mockUsersRepository.findEmail).toHaveBeenCalledWith(mockUser.email);
+    expect(userRepoMock.findEmail).toHaveBeenCalledWith(mockUser.email);
   });
 
   
