@@ -63,6 +63,7 @@ export class UserRepository implements UserRepositoryItf  {
             });
             if(user === null) return undefined;
             return user;
+            
         } catch (error) {
             if (error.code === 'P2002') {
                 throw new HttpException('Account number already exists', HttpStatus.BAD_REQUEST);

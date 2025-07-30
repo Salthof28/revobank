@@ -1,9 +1,9 @@
 
 services:
-  nest-todo:
+  revobank:
     build: .
     ports:
       - "3000:3000"
     env_file:
       - .env
-    container_name: nest-todo
+    container_name: revobank
