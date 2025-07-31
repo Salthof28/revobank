@@ -9,9 +9,11 @@ import { Role } from '../global/enum/role.enum';
 import { UpdateTransactionDto } from './dto/req/update-transaction.dto';
 import { PinAccountException } from '../accounts/exceptions/pin.exception';
 import { TransactionsServiceItf } from './transactions.service.interface';
-import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResponseTransactionDto } from './dto/res/res-transaction.dto';
 
+@ApiTags('Transactions')
+@ApiBearerAuth() 
 @Controller('transactions')
 export class TransactionsController {
   constructor(@Inject('TransactionsServiceItf') private readonly transactionsService: TransactionsServiceItf) {}

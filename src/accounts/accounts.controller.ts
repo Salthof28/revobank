@@ -8,8 +8,10 @@ import { Roles } from '../global/decorators/role.decorator';
 import { TransformRes } from '../global/interceptors/transform-body-res.interceptor';
 import { AccountBodyResDto } from './dto/res/account-body.dto';
 import { AccountsServiceItf } from './accounts.service.interface';
-import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Accounts')
+@ApiBearerAuth() 
 @Controller('accounts')
 @TransformRes(AccountBodyResDto)
 export class AccountsController {
