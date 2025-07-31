@@ -24,7 +24,7 @@ A simple banking API built with **NestJS**, simulating core digital banking func
 | Account Registration| `POST /accounts/register`     | Create a new bank account for a user (general)                  |
 | All Account         | `GET /accounts`               | Retrieve a list of accounts with optional filters (Admin Only)  |
 | Specific Account    | `GET /accounts/:id`           | Retrieve details of a specific account                          |
-| Edit Account        | `PATCH /accounts/:id`         | Update account details (Admin Only)                                          |
+| Edit Account        | `PATCH /accounts/:id`         | Update account details (Admin Only)                             |
 | Delete Account      | `DELETE /accounts/:id`        | Delete an account                                               |
 | Deposit             | `POST /transactions/deposit`  | Deposit to account                                              |
 | Withdraw            | `POST /transactions/withdraw` | Withdraw from account                                           |
@@ -85,7 +85,7 @@ Follow these steps to set up and run the Revobank API locally.
 1. **Clone the Repository**:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/revou-fsse-feb25/milestone-4-Salthof28.git
    cd milestone-4-Salthof28
    ```
 
@@ -121,11 +121,6 @@ Follow these steps to set up and run the Revobank API locally.
      ```bash
      npx prisma generate
      ```
-   - (Optional) Seed the database with sample data:
-
-     ```bash
-     npx prisma db seed
-     ```
 
 5. **Build the Project**:
 
@@ -140,6 +135,11 @@ Follow these steps to set up and run the Revobank API locally.
      ```bash
      pnpm run start:dev
      ```
+  - For development (with hot reload):
+    ```bash
+    pnpm run build
+    pnpm run start:prod
+    ```
 
 7. **Access the API**:
 
@@ -161,7 +161,6 @@ Follow these steps to set up and run the Revobank API locally.
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/revobank"
 ```
-
 
 ## 📷 Screenshot Postman Demo
 ### 1. Register
@@ -217,5 +216,6 @@ DATABASE_URL="postgresql://user:password@localhost:5432/revobank"
 
 **Live Demo:** [revobank](https://revobank-production.up.railway.app/)
 
+**If you want run demo with swager:** [revobank Swager](https://revobank-production.up.railway.app/api)
 ## Author
 🔧 Salman Althof
