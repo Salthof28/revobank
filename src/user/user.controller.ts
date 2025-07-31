@@ -53,7 +53,6 @@ export class UserController {
     @UseGuards(AuthGuard)
     @Patch('profile')
     @ApiOperation({ summary: 'update user profile' })
-    @ApiParam({ name: 'id', type: 'number', description: 'id user' })
     @ApiBody({ type: CreateUserDto })
     @ApiResponse({ status: 200, description: 'success update user profile', type: UserBodyDto })
     @ApiResponse({ status: 500, description: 'Internal server error' })
