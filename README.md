@@ -212,10 +212,16 @@ DATABASE_URL="postgresql://user:password@localhost:5432/revobank"
   - `Get All Transaction (Admin Only)`:
   ![](./image-markdown/transaction/getAllTransaction-adminOnly.png)
 
-## Demo 
+## Demo and Test Demo Account
 
 **Live Demo:** [revobank](https://revobank-production.up.railway.app/)
 
 **If you want run demo with swager:** [revobank Swager](https://revobank-production.up.railway.app/api)
+### Admin
+Email: jane@mail.com <br>
+Password: jane123
+### Customer
+Email: taiga@mail.com <br>
+Password: taiga123
 ## Author
 🔧 Salman Althof
