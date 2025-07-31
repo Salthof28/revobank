@@ -65,13 +65,7 @@ export class UserRepository implements UserRepositoryItf  {
             return user;
             
         } catch (error) {
-            if (error.code === 'P2002') {
-                throw new HttpException('Account number already exists', HttpStatus.BAD_REQUEST);
-            }
-            if (error.code === 'P2003') {
-                throw new HttpException('Invalid user_id', HttpStatus.BAD_REQUEST);
-            }
-            throw new HttpException('Failed to create account', HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new Error()
         }
 
     }
